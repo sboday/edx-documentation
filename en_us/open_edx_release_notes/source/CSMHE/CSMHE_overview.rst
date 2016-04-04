@@ -41,25 +41,25 @@ design a replacement with a higher capacity form.
 What Is the Replacement Table?
 *******************************
 
-The new database table, ``courseware_studentmodulehistoryextended``, uses a
-custom Django field type to give the ``id`` column a type of 64-bit unsigned
-integer, which offers an exponentially larger storage capacity than the
+The new database table, ``coursewarehistoryextended_studentmodulehistoryextended``,
+uses a custom Django field type to give the ``id`` column a type of 64-bit
+unsigned integer, which offers an exponentially larger storage capacity than the
 ``courseware_studentmodulehistory`` table.
 
 ********************************
 Why Is A New Database Needed?
 ********************************
 
-By design, the ``courseware_studentmodulehistoryextended`` table must be
-created in a new database, ``edxapp_csmh``. The new database will coexist
-alongside the existing ``edxapp`` database.
+By design, the ``coursewarehistoryextended_studentmodulehistoryextended`` table
+must be created in a new database, ``edxapp_csmh``. The new database will
+coexist alongside the existing ``edxapp`` database.
 
 EdX chose to set up a new database to address several requirements.
 
 * System performance during the actual data migration process.
 * Load balancing between the databases on AWS.
-* The storage capacity of the new ``courseware_studentmodulehistoryextended``
-  table.
+* The storage capacity of the new
+  ``coursewarehistoryextended_studentmodulehistoryextended`` table.
 
 .. ^^ guessing. Useful?
 

@@ -8,7 +8,7 @@ This topic provides procedures for updating to the new database and table
 configuration required by the ``courseware_studentmodulehistory`` change. It
 also includes the optional procedure for for migrating all data from
 ``courseware_studentmodulehistory`` to
-``courseware_studentmodulehistoryextended``.
+``coursewarehistoryextended_studentmodulehistoryextended``.
 
 .. contents::
    :local:
@@ -61,14 +61,14 @@ Configure the New Database and Table
 
 When you bring your servers back online with this configuration, the system
 only writes records for interactions with problems to
-``courseware_studentmodulehistoryextended``.
+``coursewarehistoryextended_studentmodulehistoryextended``.
 
 Optionally, you can now migrate all data from
 ``courseware_studentmodulehistory`` to
-``courseware_studentmodulehistoryextended``.
+``coursewarehistoryextended_studentmodulehistoryextended``.
 
 *************************************************************
-Migrate Data to ``courseware_studentmodulehistoryextended``
+Migrate Data to ``coursewarehistoryextended_studentmodulehistoryextended``
 *************************************************************
 
 .. note:: This procedure is most likely to apply to large production instances.
@@ -130,7 +130,7 @@ Migrate Data to ``courseware_studentmodulehistoryextended``
     ``"ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES": false``
 
 When you bring your servers back online with this configuration, the system
-only writes to and queries ``courseware_studentmodulehistoryextended``.
+only writes to and queries ``coursewarehistoryextended_studentmodulehistoryextended``.
 
 
 

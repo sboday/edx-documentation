@@ -39,7 +39,7 @@ An outline of the steps you complete follows.
    section.
 
 #. Migrate all data from ``courseware_studentmodulehistory`` to
-   ``courseware_studentmodulehistoryextended``.
+   ``coursewarehistoryextended_studentmodulehistoryextended``.
 
 #. Update ``lms.env.json`` to set
    ``"ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES": false``.
@@ -47,13 +47,13 @@ An outline of the steps you complete follows.
 #. Truncate ``courseware_studentmodulehistory``.
 
 As soon as you set ``"ENABLE_CSMH_EXTENDED": true``, the system writes only to
-the ``courseware_studentmodulehistoryextended`` table, but it reads from both
-that table and the ``courseware_studentmodulehistory`` table. To reduce the
-overhead of querying two tables in two databases, you migrate data and then
-set ``"ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES": false``.
+the ``coursewarehistoryextended_studentmodulehistoryextended`` table, but it
+reads from both that table and the ``courseware_studentmodulehistory`` table. To
+reduce the overhead of querying two tables in two databases, you migrate data
+and then set ``"ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES": false``.
 
 This option is suitable for installations that have a large number of records
-in the ``courseware_studentmodulehistoryextended`` table.
+in the ``coursewarehistoryextended_studentmodulehistoryextended`` table.
 
 For more information, see :ref:`CSMHE Procedures`.
 
@@ -76,9 +76,9 @@ data. An outline of the steps you need to complete follows.
    ``"ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES": true``.
 
 A system with this configuration writes only to the new
-``courseware_studentmodulehistoryextended`` table, but it reads from both that
-table and the ``courseware_studentmodulehistory`` table in the ``edxapp``
-database.
+``coursewarehistoryextended_studentmodulehistoryextended`` table, but it reads
+from both that table and the ``courseware_studentmodulehistory`` table in the
+``edxapp`` database.
 
 This option is suitable when the performance overhead of querying two databases
 is not a significant consideration.
@@ -101,9 +101,10 @@ or migration procedures are required.
      vagrant provision
 
 Reprovisioning adds the ``edxapp_csmh`` database and its
-``courseware_studentmodulehistoryextended`` table. The ``lms.env.json`` feature
-flags that control use of the ``courseware_studentmodulehistoryextended`` table
-have the following settings.
+``coursewarehistoryextended_studentmodulehistoryextended`` table. The
+``lms.env.json`` feature flags that control use of the
+``coursewarehistoryextended_studentmodulehistoryextended`` table have the
+following settings.
 
    .. code-block:: bash
 
@@ -111,8 +112,8 @@ have the following settings.
      "ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES": true
 
 A system with this configuration writes to the new
-``courseware_studentmodulehistoryextended`` table only, but queries both
-tables.
+``coursewarehistoryextended_studentmodulehistoryextended`` table only, but
+queries both tables.
 
 .. ^^ is that how devstacks should be configured?
 
