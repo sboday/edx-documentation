@@ -59,23 +59,24 @@ data package.
 To download an RDX data package from the Amazon S3 storage service, follow
 these steps.
 
-.. note:: If you are using a third-party tool to connect to Amazon S3, you
+.. note:: If you are using a third party tool to connect to Amazon S3, you
     might not be able to navigate directly from the bucket that contains your
-    own organization's data and the bucket for RDX data. You might need to
+    own organization's data to the bucket for RDX data. You might need to
     disconnect from Amazon S3 and then reconnect to the RDX destination.
 
-#. Use the AWS Command Line Interface or a third-party tool to connect to the
+#. Use the AWS Command Line Interface or a third party tool to connect to the
    ``s3://edx-course-data/`` folder on Amazon S3.
 
    For information about providing your credentials to connect to Amazon S3,
    see :ref:`Access Amazon S3`.
 
-#. Navigate within ``s3://edx-course-data/`` to locate the RDX folder.
-
-   ``{org}/rdx/{requestID}``
+#. Navigate to the RDX folder for a specific research project. The RDX data
+   package is located in the ``s3://edx-course-data/{org}/rdx/{requestID}``
+   folder.
 
 #. Download the compressed, encrypted ``{org}_{course}_{run}.tar.gz.gpg`` file
-   for each course.
+   for each of the courses in the project.
+
 
 *********************************************************
 Extract the ``{org}_{course}_{run}.tar.gz.gpg`` File
@@ -108,5 +109,5 @@ state data for the requested time period.
         {org}_{course}_{run}-{suffix}
         ...
 
-The``metadata_file.json`` provides information about the version of the edX
-analytics pipeline that in use when edX obfuscated the in the package.
+The ``metadata_file.json`` file provides information about the version of the
+edX analytics pipeline that was in use when edX obfuscated the in the package.

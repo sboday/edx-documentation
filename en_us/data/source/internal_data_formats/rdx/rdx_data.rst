@@ -525,9 +525,9 @@ In addition, the following events that indicate specific navigation choices in
 the LMS are included.
 
 * ``/courses/{course_id}/pdfbook/(intX)[/chapter/(intX)/[intX]]``
-* ``/courses/{course_id}/wiki/``
-  All paths for wiki events are included with the exception of those that
-  indicate actions, such as _preview, _edit, _create, and _delete.
+* ``/courses/{course_id}/wiki/`` All paths for wiki events are included with
+  the exception of those that indicate actions, such as ``_preview``,
+  ``_edit``, ``_create``, and ``_delete``.
 
 =========================================
 Implicit Events for Discussion Navigation
