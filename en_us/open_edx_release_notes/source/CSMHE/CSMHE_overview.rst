@@ -15,15 +15,22 @@ is needed.
 For procedures about how to upgrade all Open edX instances that follow master,
 see :ref:`CSMHE Migration Procedures`.
 
+.. note:: No changes are required or supported at this time for Open edX
+ installations that use the **Dogwood** release. For those installations, the
+ changes described in this section will be a part of the upgrade to the next
+ Open edX release, Eucalyptus.
+
 ****************************************************************
 What Is the ``courseware_studentmodulehistory`` Table?
 ****************************************************************
 
 The ``courseware_studentmodulehistory`` database table contains a record for
-each attempt that learners make to answer ``problem`` XBlocks correctly.
-This database table is a standard ``StudentModuleHistory`` Django model. It has
-an ``id`` column with a type of 32-bit signed integer, and therefore has a
-maximum capacity of 2,147,483,647 records.
+each attempt that learners make to answer problem types that are implemented in
+the edX platform by the ``capa_module`` XBlock correctly. This database table
+is a standard Django model. It has an ``id`` column with a type of 32-bit
+signed integer, and therefore has a maximum capacity of 2,147,483,647 records.
+
+.. _What Is the Issue:
 
 ************************
 What Is the Issue?
@@ -41,10 +48,13 @@ design a replacement with a higher capacity form.
 What Is the Replacement Table?
 *******************************
 
-The new database table, ``coursewarehistoryextended_studentmodulehistoryextended``,
-uses a custom Django field type to give the ``id`` column a type of 64-bit
-unsigned integer, which offers an exponentially larger storage capacity than the
+The new database table,
+``coursewarehistoryextended_studentmodulehistoryextended``, uses a custom
+Django field type to give the ``id`` column a type of 64-bit unsigned integer,
+which offers an exponentially larger storage capacity than the
 ``courseware_studentmodulehistory`` table.
+
+.. _Why Is A New Database Needed:
 
 ********************************
 Why Is A New Database Needed?
@@ -54,14 +64,16 @@ By design, the ``coursewarehistoryextended_studentmodulehistoryextended`` table
 must be created in a new database, ``edxapp_csmh``. The new database will
 coexist alongside the existing ``edxapp`` database.
 
+Depending on your operational needs, you can either create this database in
+your existing database infrastructure or stand up new database server.
+
 EdX chose to set up a new database to address several requirements.
 
-* System performance during the actual data migration process.
-* Load balancing between the databases on AWS.
-* The storage capacity of the new
-  ``coursewarehistoryextended_studentmodulehistoryextended`` table.
-
-.. ^^ guessing. Useful?
+* Distribute write load across different backends.
+* Reclaim storage on our main database instance, shifting that storage to a
+  less powerful and less expensive system.
+* Enable smaller, faster, and less disruptive backups.
+* Ensure faster disaster recovery by having smaller backups.
 
 The edx-platform repository master branch writes records to this database and
 table as of TBD.

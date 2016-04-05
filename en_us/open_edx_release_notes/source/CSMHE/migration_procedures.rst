@@ -6,7 +6,7 @@ Procedures for Replacing ``courseware_studentmodulehistory``
 
 This topic provides procedures for updating to the new database and table
 configuration required by the ``courseware_studentmodulehistory`` change. It
-also includes the optional procedure for for migrating all data from
+also includes the optional procedure for migrating all data from
 ``courseware_studentmodulehistory`` to
 ``coursewarehistoryextended_studentmodulehistoryextended``.
 
@@ -23,7 +23,8 @@ Instances>`.
 Configure the New Database and Table
 ***************************************
 
-.. note:: This procedure applies to all Fullstack and production instances.
+.. note:: This procedure is required for all fullstack and production
+  instances.
 
 #. Create a mysql database. For the edx.org and edX Edge instances, edX named
    this database ``edxapp_csmh``.
@@ -115,12 +116,11 @@ Migrate Data to ``coursewarehistoryextended_studentmodulehistoryextended``
 
 #. If you need to restart the migration, you can use the following command to
    find the largest ID value that was successfully inserted into the new table.
+   You can then rerun with i > 0.
 
    .. code-block:: bash
 
      select max(id) from wwc.courseware_studentmodulehistory where id < MAXID
-
-   You can then rerun with i > 0.
 
 #. Edit the ``lms.env.json`` file to set the
    ``ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES`` feature flag.
@@ -130,8 +130,8 @@ Migrate Data to ``coursewarehistoryextended_studentmodulehistoryextended``
     ``"ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES": false``
 
 When you bring your servers back online with this configuration, the system
-only writes to and queries ``coursewarehistoryextended_studentmodulehistoryextended``.
-
+only writes to and queries
+``coursewarehistoryextended_studentmodulehistoryextended``.
 
 
 .. _ansible playbook:  https://github.com/edx/configuration/blob/master/playbooks/edx-east/create_db_and_users.yml
