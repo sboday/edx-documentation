@@ -15,40 +15,114 @@ also includes the optional procedure for migrating all data from
    :depth: 1
 
 Before you follow these procedures for your Open edX instance, be sure to
-review the different :ref:`options for updating
-``courseware_studentmodulehistory``<Options for Updating Your Open edX
-Instances>`.
+review the different :ref:`options<Options for Updating Your Open edX
+Instances>` for updating ``courseware_studentmodulehistory``.
 
-***************************************
-Configure the New Database and Table
-***************************************
+*************************************
+Step 1: Create the Database
+*************************************
 
-.. note:: This procedure is required for all fullstack and production
-  instances.
+.. contents::
+   :local:
+   :depth: 2
 
-#. Create a mysql database. For the edx.org and edX Edge instances, edX named
-   this database ``edxapp_csmh``.  You will need to modify this example for your
-   database users and naming schemes.
+========================================
+Options for Creating the Database
+========================================
 
-   .. code-block:: sql
+For all fullstack and production instances that follow master, you must create
+a MySQL database and set users up. To do so, you can use one of
+these options.
+
+* Use the `create_db_and_users.yml playbook`_ to create the database and user
+  automatically. For more information, see :ref:`Use the Playbook to Create the
+  Database`.
+
+* Create the database and users manually. If you select this option, you must
+  also complete other configuration steps manually. For more information, see
+  :ref:`Create the Database Manually`.
+
+.. note:: You must follow one of these procedures for all of your fullstack
+  and production instances.
+
+.. _Use the Playbook to Create the Database:
+
+Use the Playbook to Create the Database
+****************************************
+
+Follow the `create_db_and_users.yml playbook`_ to create the ``edxapp_csmh``
+database and its users automatically.
+
+You then choose an option for :ref:`configuring<Options for Configuring the
+Database>` the ``edxapp_csmh`` database.
+
+.. _Create the Database Manually:
+
+Create the Database Manually
+*******************************
+
+Create the MySQL database. For the edx.org and edX Edge instances, edX named
+this database ``edxapp_csmh``.
+
+Modify the following example command for your database users and naming
+schemes.
+
+.. code-block:: sql
 
      mysql> create database edxapp_csmh DEFAULT CHARACTER SET utf8;
      mysql> grant SELECT,INSERT,UPDATE,DELETE on edxapp_csmh.* to 'edxapp001@hosts'
      mysql> grant SELECT,INSERT,UPDATE,DELETE,ALTER,CREATE,DROP,INDEX on edxapp_csmh.* to 'migrate@hosts'
 
-   Alternatively, you can use the `create_db_and_users.yml playbook`_
-   to create this databse and user automatically.
+You then choose an option for :ref:`configuring<Options for Configuring the
+Database>` your new database.
 
+*************************************
+Step 2: Configure the Database
+*************************************
 
-#. If you are using the `edxapp.yml playbook`_
-   to install your edxapp instances, then master after TBD will properly populate DATABASES
-   for you by setting ``edxapp_databases``.  This code expects ``EDXAPP_MYSQL_CSMH_DB_NAME``,
-   ``EDXAPP_MYSQL_CSMH_USER``, ``EDXAPP_MYSQL_CSMH_PASSWORD``, ``EDXAPP_MYSQL_CSMH_HOST``,
-   ``EDXAPP_MYSQL_CSMH_PORT`` to be populated in the same way the ``EDXAPP_MYSQL_...``
-   variables are populated in your ansible overrides.
+.. contents::
+   :local:
+   :depth: 2
 
-   If you have another method of updating ``lms.auth.json``, you will want to add
-   a clause similar to the following to the DATABASES section.
+.. _Options for Configuring the Database:
+
+=====================================
+Options for Configuring the Database
+=====================================
+
+After you create the MySQL database and set users up, you update
+``lms.auth.json`` to add configuration settings to the DATABASES section. To do
+so, you can use one of these options.
+
+* Use the `edxapp.yml playbook`_ to install your edxapp instances. If you
+  choose to use this playbook, then master after TBD will update
+  ``lms.auth.json`` to set ``edxapp_databases`` in the DATABASES section for
+  you.
+
+.. ^^ Kevin, later this playbook is used to run migrations. Do you use it for both? are "install your edxapp instances" and "run migrations" synonyms? If so, can we use just one of them consistently?
+
+  The playbook requires ``EDXAPP_MYSQL_CSMH_DB_NAME``,
+  ``EDXAPP_MYSQL_CSMH_USER``, ``EDXAPP_MYSQL_CSMH_PASSWORD``,
+  ``EDXAPP_MYSQL_CSMH_HOST``, ``EDXAPP_MYSQL_CSMH_PORT`` to be populated in the
+  same way that the ``EDXAPP_MYSQL_...`` variables are populated in your
+  Ansible overrides.
+
+* Update the DATABASES section in ``lms.auth.json`` manually. If you create the
+  MySQL database yourself, you must use this option. For more information, see
+  :ref:`Update DATABASES Manually`.
+
+.. _Update DATABASES Manually:
+
+Update DATABASES Manually
+**************************
+
+If you create the MySQL database yourself, you configure the database by adding
+a clause to the ``lms.auth.json`` file.
+
+#. Open the ``edx/app/edxapp/lms.auth.json`` file in your text editor.
+
+#. In the DATABASES section, add configuration details for your new database.
+   An example follows.
 
    .. code-block:: bash
 
@@ -61,85 +135,190 @@ Configure the New Database and Table
             "USER": "edxapp001"
         },
 
+*****************************************
+Step 3: Enable Writes to the New Table
+*****************************************
 
-#. Edit the ``lms.env.json`` file to set the ``ENABLE_CSMH_EXTENDED`` feature
-   flag.
+You complete this step manually.
+
+Edit the ``lms.env.json`` file to set the ``ENABLE_CSMH_EXTENDED`` feature
+flag.
 
    .. code-block:: bash
 
     ``"ENABLE_CSMH_EXTENDED": true``
 
-#. Run Django migrations to create the new
-   ``coursewarehistoryextended_studentmodulehistoryextended`` table.  There
-   are two scripts, ``/edx/bin/edxapp-migrate-lms`` and ``/edx/bin/edxapp-migrate-cms``
-   which are what the ``edxapp.yml`` play uses to run migrations.  If you wish to run
-   migrations by hand, the commands you want to run are on the last few lines of those
-   scripts.  In particular, you need to run lms and cms migrations, and against both
-   the default and student_module_history database.  These scripts hide that complexity.
 
-When you bring your servers back online with this configuration, the system
-only writes records for interactions with problems to
-``coursewarehistoryextended_studentmodulehistoryextended``.
+*************************************
+Step 4: Create the Table
+*************************************
 
-Optionally, you can now migrate all data from
-``courseware_studentmodulehistory`` to
-``coursewarehistoryextended_studentmodulehistoryextended``.
+.. contents::
+   :local:
+   :depth: 2
+
+.. _Options for Creating the Table:
+
+=====================================
+Options for Creating the Table
+=====================================
+
+After you create and configure the MySQL database and enable the new table, you
+create the new table. To do so, you can use one of these options.
+
+* Run Django migrations to create the
+  ``coursewarehistoryextended_studentmodulehistoryextended`` table. The
+  ``edxapp.yml`` playbook uses these scripts to run migrations.
+  * ``/edx/bin/edxapp-migrate-lms``
+  * ``/edx/bin/edxapp-migrate-cms``
+
+* Run migrations manually. For more information, see :ref:`Run Migrations Manually`.
+
+After you bring your servers back online with this configuration, the system
+only writes records for interactions with CAPA problems to the
+``coursewarehistoryextended_studentmodulehistoryextended`` table.
+
+.. _Run Migrations Manually:
+
+Run Migrations Manually
+**************************
+
+A summary of the manual steps for running migrations follows.
+
+#. Run cms migrations against the default database.
+#. Run lms migrations against the default database.
+#. Run cms migrations against the ``student_module_history`` database.
+#. Run lms migrations against the ``student_module_history`` database.
+
+If you choose to run migrations manually, refer to the last few lines of the
+``/edx/bin/edxapp-migrate-lms`` and ``/edx/bin/edxapp-migrate-cms`` scripts
+for the commands that you must run.
+
 
 *************************************************************
-Migrate Data to ``coursewarehistoryextended_studentmodulehistoryextended``
+Optional Step 5: Migrate All Data to the New Table
 *************************************************************
 
-.. note:: This procedure only applies large production instances which need
-   the operational benefits listed in :ref:`Why Is A New Database Needed`.
+After you complete all of the deployment steps (1-4) described above, you have
+the option to migrate all data from ``courseware_studentmodulehistory`` to
+``coursewarehistoryextended_studentmodulehistoryextended``. For more
+information about this optional procedure, see :ref:`Migrate All Data to One
+Table`.
 
-#. Follow the deployment setps above so that you are running a deploy of Open edX which is
-   writing only to ``coursewarehistoryextended_studentmodulehistoryextended``.
+.. contents::
+   :local:
+   :depth: 2
 
-#. Make use of the `migration scripts`_ we have written.
+.. note:: This procedure is suitable only for large production instances that
+ require the operational benefits described in the :ref:`Why Is A New Database
+ Needed` topic.
 
-    #. ``migrate-separate-database-instances.sh`` assumes you have split your databases
-       into separate database servers.  We did this by creating a read replica and then severing it from
-       production.  This ensures you have a mostly up to date ``courseware_studentmodulehistory`` which
-       can be copied into ``coursewarehistoryextended_studentmodulehistoryextended``.  If you go this route,
-       you will want to do a final mysqldump from the first database server to the second database server.
-       After this is done and ``courseware_studentmodulehistory`` is caught up, you can run
-       ``migrate-seterate-database-instances.sh`` to slowly copy data.  Be sure to monitor your progress
-       to ensure that you don't copy too quickly and cause disk contention or other performance issues
-       on this new database instance.
+.. _Options for Creating the Table:
 
-       .. code-block:: bash
+=====================================
+Script Options for Migrating Data
+=====================================
 
-          mysqldump --skip-add-drop-table --no-create-info -u migrate -p -h dbhost db courseware_studentmodulehistory --where='id > LAST_ID' --result-file=catchup.sql
-          mysql -u migrate -p -h newdbhost db2 < catchup.sql
+EdX provides the following `migration scripts`_. You select the one that
+applies to your database architecture.
 
-    #. ``migrate-same-database-instance.sh`` assumes you have created a new database in the same
-       database server.  This is simpler than setting up a separate database server, but gains a
-       separate set of operational benefits.
+*  ``migrate-separate-database-instances.sh`` applies to installations that
+   set up the new database on a different database server than the default
+   database.
 
-    #. If you need to restart either migration, you can use the following command to
-       find the largest ID value that was successfully inserted into the new table.
-       You can then rerun with MINID set to the result of the following query.
+* ``migrate-same-database-instance.sh`` applies to installations that set up
+  the new database on the same database server as the default database.
 
-       .. code-block:: bash
+  Implementing this database architecture is simpler than setting up a separate
+  database server, but it offers different operational benefits.
 
-         select max(id) from wwc.courseware_studentmodulehistory where id < MAXID
+Both options require your installation to be running a deploy of Open edX that
+writes only to ``coursewarehistoryextended_studentmodulehistoryextended``. You
+can :ref:`restart<Restart the Migration>`` both migrations if necessary.
 
-#. Edit the ``lms.env.json`` file to set the
-   ``ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES`` feature flag.
+Run the Script for Separate Database Servers
+*********************************************
+
+EdX selected the database architecture with separate database servers, and
+implemented it by creating a read replica and then severing it from production.
+This process ensures that you have a mostly up to date
+``courseware_studentmodulehistory`` table, which is then copied to
+``coursewarehistoryextended_studentmodulehistoryextended``.
+
+#. Do a final mysqldump from the first (default) database server to the second
+   (new) database server.
+
+   .. code-block:: bash
+
+     mysqldump --skip-add-drop-table --no-create-info -u migrate -p -h dbhost db courseware_studentmodulehistory --where='id > LAST_ID' --result-file=catchup.sql
+
+   Allow the mysqldump to run to completion, so that
+   ``courseware_studentmodulehistory`` is caught up.
+
+#. Run ``migrate-separate-database-instances.sh`` to copy data slowly.
+
+   .. code-block:: bash
+
+     mysql -u migrate -p -h newdbhost db2 < catchup.sql
+
+   Be sure to monitor your progress to ensure that the process runs slowly, and
+   does not cause disk contention or other performance issues on the new
+   database instance.
+
+Run the Script for A Single Database Server
+*******************************************
+
+Run ``migrate-same-database-instance.sh``.
+
+.. _Restart the Migration:
+
+======================
+Restart the Migration
+======================
+
+If you need to restart either migration, you can use the following command to
+find the largest ID value that was successfully inserted into the new table.
+
+.. code-block:: bash
+
+   select max(id) from wwc.courseware_studentmodulehistory where id < MAXID
+
+You can then rerun with MINID set to the result of this query.
+
+====================================
+Disable Reads from the Old Table
+====================================
+
+Edit the ``lms.env.json`` file to set the
+``ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES`` feature flag.
 
    .. code-block:: bash
 
     "ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES": false
 
-When you bring your servers back online with this configuration, the system
-only writes to and queries from
-``coursewarehistoryextended_studentmodulehistoryextended``.
+After you bring your servers back online with this configuration, the system
+only writes to and queries from the
+``coursewarehistoryextended_studentmodulehistoryextended`` table.
 
-#. Truncate your ``courseware_studentmodulehistory`` tables.  If you have a very large
-   table, you may need to use our ``slow-delete.sh`` script, or one of the many other
-   techniques for slowly draining a mysql table.  ``TRUNCATE TABLE courseware_studentmodulehistory``
-   is the preferred technique, but can cause a lot of disk activity.
+====================================
+Truncate the Old Table
+====================================
+
+Select one of the available MySQL techniques for slowly draining the
+``courseware_studentmodulehistory`` table.
+
+* The preferred technique for installations with small or moderately sized
+  databases is the ``TRUNCATE TABLE courseware_studentmodulehistory`` command.
+  However, this command can cause a lot of disk activity.
+
+* If your table is very large, you can choose to use the ``slow-delete.sh``
+  script instead. EdX prepared and used this script to truncate
+  ``courseware_studentmodulehistory``.
+
+
 
 .. _migration scripts: https://github.com/edx/configuration/blob/master/util/csmh-extended
+
 .. _edxapp playbook: https://github.com/edx/configuration/blob/master/playbooks/edx-east/edxapp.yml
+
 .. _create_db_and_users.yml playbook:   https://github.com/edx/configuration/blob/master/playbooks/edx-east/create_db_and_users.yml

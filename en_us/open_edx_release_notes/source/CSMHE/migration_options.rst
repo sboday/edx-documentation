@@ -74,6 +74,8 @@ A system with this configuration writes to the new
 ``coursewarehistoryextended_studentmodulehistoryextended`` table only, but
 queries both tables.
 
+.. _Migrate All Data to One Table:
+
 ******************************
 Migrate All Data to One Table
 ******************************
