@@ -94,12 +94,10 @@ After you create the MySQL database and set users up, you update
 ``lms.auth.json`` to add configuration settings to the DATABASES section. To do
 so, you can use one of these options.
 
-* Use the `edxapp.yml playbook`_ to install your edxapp instances. If you
+* Use the `edxapp.yml playbook`_ to update your edxapp instances. If you
   choose to use this playbook, then master after TBD will update
   ``lms.auth.json`` to set ``edxapp_databases`` in the DATABASES section for
   you.
-
-.. ^^ Kevin, later this playbook is used to run migrations. Do you use it for both? are "install your edxapp instances" and "run migrations" synonyms? If so, can we use just one of them consistently?
 
   The playbook requires ``EDXAPP_MYSQL_CSMH_DB_NAME``,
   ``EDXAPP_MYSQL_CSMH_USER``, ``EDXAPP_MYSQL_CSMH_PASSWORD``,
@@ -139,8 +137,6 @@ a clause to the ``lms.auth.json`` file.
 Step 3: Enable Writes to the New Table
 *****************************************
 
-You complete this step manually.
-
 Edit the ``lms.env.json`` file to set the ``ENABLE_CSMH_EXTENDED`` feature
 flag.
 
@@ -148,6 +144,8 @@ flag.
 
     ``"ENABLE_CSMH_EXTENDED": true``
 
+Alternatively, you can use your current Ansible overrides for updating feature
+flags to make this change.
 
 *************************************
 Step 4: Create the Table
