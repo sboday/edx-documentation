@@ -4,10 +4,10 @@
 Data Obfuscation Procedures for RDX
 ########################################
 
-Researchers who are approved for a research project work with their
-institution's data czar to receive RDX data. Before delivering data through
-this program, edX works to protect personally identifying information (PII) by
-removing obvious identifiers.
+To receive RDX data, researchers who are approved for a research project must
+work with their institution's data czar. Before delivering data through this
+program, edX works to obscure personally identifying information (PII) by
+obfuscating obvious identifiers.
 
 The following topics describe the data obfuscation procedures.
 
@@ -39,7 +39,7 @@ EdX remaps SQL table column values that are foreign keys, such as the
 process applies a format-preserving algorithm to the affected data values
 across all table columns and event member fields. As a result, scripts and
 software designed to process these values in institution-specific data packages
-continue to function as expected for an RDX data package.
+should continue to function as expected for an RDX data package.
 
 ==========
 Removal
@@ -50,9 +50,9 @@ with NULL, a zero-length string, or zeros, based on the data type of the column
 or field.
 
 EdX applies this method to SQL table columns, event member fields, and events
-that are no longer used, or that are unlikely to be of value in a research
-project. Examples include the ``first_name`` and ``last_name`` columns in the
-``auth_userprofile`` table.
+that are no longer used, or that contain PII that cannot be remapped to a
+usable value. Examples include the ``first_name`` and ``last_name`` columns in
+the ``auth_userprofile`` table and ``wiki_articlerevision.ip_address``.
 
 =================
 Replacement
@@ -73,12 +73,25 @@ The replacement method identifies and replaces the following values.
   of usernames that begin or end with a punctuation mark such as an underscore
   or hyphen.
 
+  The system identifies and replaces only the username of the person who is
+  associated with the event or row. For example, if a learner identifies a wiki
+  contribution with her username, the system replaces that username if it
+  matches the value in ``auth_user.username``.
+
 * Names that, after punctuation is removed, match any whitespace delimited
   words of three or more characters in ``auth_userprofile.name``.
+
+  The system identifies and replaces only the name of the person who is
+  associated with the event or row. For example, if a learner introduces
+  himself on a course discussion page, the system replaces the name if it
+  matches a word in ``auth_userprofile.name``.
 
 EdX uses tokens that identify the category of the information that was
 replaced, including ``<<EMAIL>>`` and ``<<PHONE_NUMBER>>``. As a result, the
 general meaning of the original text can be inferred from the token.
+
+Replacement Example
+********************
 
 For example, a learner adds this post to a course discussion.
 
@@ -258,29 +271,6 @@ is included in an RDX package. For more information about this table, see
 For more information about how edX changes the data in these fields, see
 :ref:`Data Obfuscation Methods`.
 
-=============================================================
-Obfuscated Columns in the ``user_id_map`` Table
-=============================================================
-
-The following table lists the columns in the ``user_id_map`` table that can
-contain PII and the obfuscation method that is applied before the data is
-included in an RDX package. For more information about this table, see
-:ref:`user_id_map`.
-
-  .. list-table::
-     :widths: 25 65
-     :header-rows: 1
-
-     * - Column
-       - Method
-     * - ``user_id``
-       - Remap (same as ``auth_user.id``)
-     * - ``username``
-       - Remap (same as ``auth_user.username``)
-
-For more information about how edX changes the data in these fields, see
-:ref:`Data Obfuscation Methods`.
-
 ===============================================================
 Obfuscated Columns in the ``teams_courseteammembership`` Table
 ===============================================================
@@ -419,17 +409,41 @@ is included in an RDX package. For more information about this table, see
 
      * - Column
        - Method
-     * - ``user_id``
-       - Remap (same as ``auth_user.id``)
-     * - ``ip_address``
+     * - ``automatic_log``
        - Remove
      * - ``content``
        - Replace
-
-.. TBD: user_message, automatic_log, title: "scrub or preserve or delete" per https://openedx.atlassian.net/wiki/display/AN/Research+Data+Exchange+Deidentification
+     * - ``ip_address``
+       - Remove
+     * - ``user_id``
+       - Remap (same as ``auth_user.id``)
+     * - ``user_message``
+       - Remove
 
 For more information about how edX changes the data in these fields, see
 :ref:`Data Obfuscation Methods`.
+
+*******************
+Unchanged SQL Table
+*******************
+
+The obfuscation process does not change any of the values in the
+``teams_courseteam`` table. For more information about this table, see
+:ref:`teams_courseteam`.
+
+********************************
+Data Omitted from RDX Packages
+********************************
+
+The following data is not included in RDX packages.
+
+*  The email opt in report in the ``{org}-email_opt_in-{site}-analytics.csv``
+   file . For more information about this report, see :ref:`Institution_Data`.
+
+* The ``user_id_map`` SQL table. For more information about this table, see
+  :ref:`user_id_map`.
+
+.. Question to Brian about ORA and this table
 
 ******************************
 Obfuscated Discussion Data
@@ -475,6 +489,8 @@ documents, see :ref:`Discussion Forums Data`.
 For more information about how edX changes the data in these fields, see
 :ref:`Data Obfuscation Methods`.
 
+.. Gabe's work that involves "finding potentially sensitive metadata in course exports and removing it. This is done for both course structure and for course content. It involves applying a whitelist of known xblocks with permitted attributes and children, and anything not on the list is removed. It also involves scrubbing the course policy file " TBD
+
 ************************************
 Types of Event Data in RDX Packages
 ************************************
@@ -501,6 +517,8 @@ packages.
 =====================================
 Implicit Events for Course Navigation
 =====================================
+
+.. question to Victor from Brian: "if we don't document implicit events for regular research packages, should we really be documenting the subset of implicit events we are including in RDX packages? Could we just say that we include a subset of such events, but we don't document them because we really don't support them?""
 
 RDX data packages include implicit events for course navigation that begin with
 these prefixes.
@@ -568,8 +586,8 @@ included in an RDX package.
 
 The common ``context`` field, which can contain event-specific member fields,
 is described in the :ref:`context member fields<Obfuscated Data in context
-Member Fields>` topic. For more information about common fields, see
-:ref:`common`.
+Member Fields>` topic. For more information about the fields that are common to
+all events, see :ref:`common`.
 
   .. list-table::
      :widths: 25 65
@@ -577,8 +595,6 @@ Member Fields>` topic. For more information about common fields, see
 
      * - Common Field
        - Method
-     * - ``agent``
-       - Remap TBD
      * - ``host``
        - Remove
      * - ``ip``
@@ -610,10 +626,16 @@ obfuscated when present for any event.
        - Method
      * - ``client``
        - Remove ``device``, ``host``, or ``ip`` if present
+     * - ``host``
+       - Remove
+     * - ``ip``
+       - Remove
      * - ``path``
        - Remove
      * - ``user_id``
        - Remap
+     * - ``username``
+       - Remove
 
 For more information about how edX changes the data in these fields, see
 :ref:`Data Obfuscation Methods`.
@@ -624,6 +646,12 @@ Obfuscated Data in ``event`` Member Fields
 
 The following table lists member fields of the ``event`` field that are
 obfuscated when present for any event.
+
+.. note:: To search for string values to replace, the obfuscation process
+  recursively traverses the entire event data structure. This table includes a
+  representative set of event member fields that typically include data that is
+  replaced. Additional event member fields can also include data that is
+  replaced.
 
   .. list-table::
      :widths: 25 65
@@ -650,7 +678,7 @@ obfuscated when present for any event.
      * - ``GET``
        - Remove
      * - ``instructor``
-       - TBD
+       - Remap (same as ``auth_user.username``)
      * - ``POST``
        - Remove
      * - ``report_url``
@@ -662,11 +690,11 @@ obfuscated when present for any event.
      * - ``saved_response.text``
        - Replace
      * - ``student``
-       - TBD
+       - Remap (same as ``auth_user.username``)
      * - ``student_answer``
        - Replace
      * - ``source_url``
-       - Remove TBD
+       - Remove
      * - ``title``
        - Replace
      * - ``url``
@@ -674,15 +702,13 @@ obfuscated when present for any event.
      * - ``url_name``
        - Remove
      * - ``user``
-       - TBD
+       - Remap (same as ``auth_user.username``)
      * - ``user_id``
-       - Remap
+       - Remap (same as ``auth_user.id``)
      * - ``username``
-       - Remap
+       - Remap (same as ``auth_user.username``)
 
 For more information about how edX changes the data in these fields, see
 :ref:`Data Obfuscation Methods`.
-
-.. ^ several fields did not have a specific cleaning method on https://openedx.atlassian.net/wiki/display/AN/Research+Data+Exchange+Deidentification
 
 .. include:: ../../../../links/links.rst
