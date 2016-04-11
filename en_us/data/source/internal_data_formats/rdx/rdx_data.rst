@@ -21,14 +21,12 @@ The following topics describe the data obfuscation procedures.
 Data Obfuscation Methods
 **************************
 
-To obfuscate PII in RDX data packages, edX modifies data using these methods.
+To obfuscate PII and other sensitive informaiton in RDX data packages, edX
+uses these methods to modify data.
 
 .. contents::
    :local:
    :depth: 1
-
-EdX only obfuscates PII. All other values are included in RDX data packages
-unchanged.
 
 =================
 Remapping
@@ -49,10 +47,10 @@ Data removal effectively deletes a data value. This process replaces a value
 with NULL, a zero-length string, or zeros, based on the data type of the column
 or field.
 
-EdX applies this method to SQL table columns, event member fields, and events
-that are no longer used, or that contain PII that cannot be remapped to a
-usable value. Examples include the ``first_name`` and ``last_name`` columns in
-the ``auth_userprofile`` table and ``wiki_articlerevision.ip_address``.
+EdX applies this method to files and columns that contain sensitive data or PII
+that cannot be remapped to a usable value. Examples include the ``first_name``
+and ``last_name`` columns in the ``auth_userprofile`` table and
+``wiki_articlerevision.ip_address``.
 
 =================
 Replacement
@@ -128,6 +126,82 @@ values that the replacement method identifies or replaces. In this case, the
     Twitter: @jmdoe
     Mobile: 1233211234
 
+**********************************************
+Obfuscated Data in Course Content Data Files
+**********************************************
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. _Obfuscated Data in the course_structure File:
+
+==================================================
+Obfuscated Data in the ``course_structure`` File
+==================================================
+
+An ``{org}-{course}-{date}-course_structure-{site}-analytics.json`` file is
+provided for each course. Its ``metadata.advanced_modules`` member field stores
+course settings, which can contain sensitive data such as the password used to
+authenticate a third party service for the course.
+
+Before packaging this file for an RDX research project, edX obfuscates data as
+follows.
+
+* EdX only includes an approved subset of the settings that can be defined in
+  the ``metadata.advanced_modules`` array.
+
+* EdX removes all of the other fields found in this array.
+
+* A new field, ``redacted_metadata``, is added to the file. This JSON array
+  lists all of the fields that edX removed.
+
+For more information about this file, see :ref:`course_structure`.
+
+=======================================
+Obfuscated Data in the ``course`` File
+=======================================
+
+An ``{org}-{course}-course-{site}-analytics.xml.tar.gz`` file is provided for
+each course. This compressed file exports of all of a course's content in a set
+of JSON and XML files.
+
+.. note:: EdX does not support imports of ``course`` files that contain
+ obfuscated data.
+
+Obfuscated Data in the ``policy.json`` File
+********************************************
+
+Like the ``course_structure`` file, the ``policy.json`` file found in the
+``course`` file stores course-level settings. EdX uses the same procedure
+described for :ref:`Obfuscated Data in the course_structure File` to remove
+data from this file.
+
+For more information about this file, see :ref:`olx:Course Policies`.
+
+Obfuscated Data in the XML Files
+*********************************
+
+The XML files found in the ``course`` file store data for course content. The
+files for course components can contain sensitive data that is defined at the
+component level, such as passwords for third party services.
+
+Before packaging the XML files for an RDX research project, edX obfuscates data
+as follows.
+
+* EdX only includes an approved subset of the settings that can be defined for
+  components.
+
+* EdX removes all of the other attributes that define component settings.
+
+* The new ``redacted_attributes`` attribute lists all of the attributes that
+  edX removed.
+
+* The new ``redacted_children`` attribute lists all of the child nodes that edX
+  removed.
+
+For more information about this file, see :ref:`olx:Course Components`.
+
 *****************************
 Obfuscated Data in SQL Tables
 *****************************
@@ -141,7 +215,7 @@ Obfuscated Columns in the ``auth_user`` Table
 ==============================================
 
 The following table lists the columns in the ``auth_user`` table that can
-contain PII and the obfuscation method that is applied before the data is
+contain PII and the obfuscation method that edX applies before the data is
 included in an RDX package. For more information about this table, see
 :ref:`auth_user`.
 
@@ -194,7 +268,7 @@ Obfuscated Columns in the ``auth_userprofile`` Table
 =====================================================
 
 The following table lists the columns in the ``auth_userprofile`` table that
-can contain PII and the obfuscation method that is applied before the data is
+can contain PII and the obfuscation method that edX applies before the data is
 included in an RDX package. For more information about this table, see
 :ref:`auth_userprofile`.
 
@@ -234,7 +308,7 @@ Obfuscated Columns in the ``student_courseenrollment`` Table
 =============================================================
 
 The following table lists the columns in the ``student_courseenrollment`` table
-that can contain PII and the obfuscation method that is applied before the data
+that can contain PII and the obfuscation method that edX applies before the data
 is included in an RDX package. For more information about this table, see
 :ref:`student_courseenrollment`.
 
@@ -255,7 +329,7 @@ Obfuscated Columns in the ``user_api_usercoursetag`` Table
 =============================================================
 
 The following table lists the columns in the ``user_api_usercoursetag`` table
-that can contain PII and the obfuscation method that is applied before the data
+that can contain PII and the obfuscation method that edX applies before the data
 is included in an RDX package. For more information about this table, see
 :ref:`user_api_usercoursetag`.
 
@@ -276,7 +350,7 @@ Obfuscated Columns in the ``teams_courseteammembership`` Table
 ===============================================================
 
 The following table lists the columns in the ``teams_courseteammembership``
-table that can contain PII and the obfuscation method that is applied before
+table that can contain PII and the obfuscation method that edX applies before
 the data is included in an RDX package. For more information about this table,
 see :ref:`teams_courseteammembership`.
 
@@ -297,7 +371,7 @@ Obfuscated Columns in the ``courseware_studentmodule`` Table
 ===============================================================
 
 The following table lists the columns in the ``courseware_studentmodule`` table
-that can contain PII and the obfuscation method that is applied before the data
+that can contain PII and the obfuscation method that edX applies before the data
 is included in an RDX package. For more information about this table, see
 :ref:`courseware_studentmodule`.
 
@@ -321,7 +395,7 @@ Obfuscated Columns in the ``certificates_generatedcertificate`` Table
 
 The following table lists the columns in the
 ``certificates_generatedcertificate`` table that can contain PII and the
-obfuscation method that is applied before the data is included in an RDX
+obfuscation method that edX applies before the data is included in an RDX
 package. For more information about this table, see
 :ref:`certificates_generatedcertificate`.
 
@@ -355,7 +429,7 @@ Obfuscated Columns in the ``verify_student_verificationstatus`` Table
 
 The following table lists the columns in the
 ``verify_student_verificationstatus`` table that can contain PII and the
-obfuscation method that is applied before the data is included in an RDX
+obfuscation method that edX applies before the data is included in an RDX
 package. For more information about this table, see
 :ref:`verify_student_verificationstatus`.
 
@@ -376,7 +450,7 @@ Obfuscated Columns in the ``wiki_article`` Table
 ============================================================
 
 The following table lists the columns in the ``wiki_article`` table that can
-contain PII and the obfuscation method that is applied before the data is
+contain PII and the obfuscation method that edX applies before the data is
 included in an RDX package. For more information about this table, see
 :ref:`wiki_article`.
 
@@ -399,7 +473,7 @@ Obfuscated Columns in the ``wiki_articlerevision`` Table
 ============================================================
 
 The following table lists the columns in the ``wiki_articlerevision`` table
-that can contain PII and the obfuscation method that is applied before the data
+that can contain PII and the obfuscation method that edX applies before the data
 is included in an RDX package. For more information about this table, see
 :ref:`wiki_articlerevision`.
 
@@ -450,7 +524,7 @@ Obfuscated Discussion Data
 ******************************
 
 The following table lists fields in the ``CommentThread`` and ``Comment`` JSON
-documents that can contain PII and the obfuscation method that is applied
+documents that can contain PII and the obfuscation method that edX applies
 before the data is included in an RDX package. For more information about these
 documents, see :ref:`Discussion Forums Data`.
 
@@ -581,7 +655,7 @@ Obfuscated Data in Common Fields
 ==================================
 
 The following table lists fields that can contain PII and that are common to
-all events, with the obfuscation method that is applied before the data is
+all events, with the obfuscation method that edX applies before the data is
 included in an RDX package.
 
 The common ``context`` field, which can contain event-specific member fields,
