@@ -84,32 +84,30 @@ Extract the ``{org}_{course}_{run}.tar.gz.gpg`` File
 *********************************************************
 
 After you download each of the ``{org}_{course}_{run}.tar.gz.gpg`` files for an
-RDX research project, you complete these tasks.
+RDX research project, you complete these tasks. You repeat this process for
+each ``{org}_{course}_{run}.tar.gz.gpg`` file in the RDX package.
 
-#. Use your private key to decrypt the file. See :ref:`Decrypt an Encrypted
-   File`.
+#. Use your private key to decrypt the file. The result is a file named
+   ``{org}_{course}_{run}.tar.gz``. See :ref:`Decrypt an Encrypted File`.
 
-#. Extract the log file from the compressed .gz file. The result is a single
-   file named ``{org}-prod-events-{date}.log``. (Alternatively, the data can
-   be decompressed in stream using a tool such as gzip.)
+#. Use the gunzip command to expand the .gz file. The result is a file named
+   ``{org}_{course}_{run}.tar``.
 
-#. Repeat this process for each ``{org}_{course}_{run}.tar.gz.gpg`` file in the
-   RDX package.
+#. Extract the .tar file. The result of this decryption and extraction process
+   is a ``metadata_file.json`` file and a set of folders that contain the event
+   and state data for the requested time period. The file and folder hierarchy
+   follows this pattern.
 
-The result of each decryption and extraction process is a
-``metadata_file.json`` file and a set of folders that contain the event and
-state data for the requested time period.
+   ::
+     metadata_file.json
+       /events
+         {org}_{course}_{run}-events-CCYY-MM-dd.log.gz
+         ...
+       /state
+         /CCYY-MM-dd
+           {org}_{course}_{run}-{suffix}
+           ...
 
-::
-  metadata_file.json
-    /events
-      {org}_{course}_{run}-events-CCYY-MM-dd.log.gz
-      ...
-    /state
-      /CCYY-MM-dd
-        {org}_{course}_{run}-{suffix}
-        ...
-
-The ``metadata_file.json`` file provides information about the version of the
-edX analytics pipeline that was in use when edX obfuscated PII and other
-sensitive values in the package.
+   The ``metadata_file.json`` file provides information about the version of
+   the edX analytics pipeline that was in use when edX obfuscated PII and other
+   sensitive values in the package.
