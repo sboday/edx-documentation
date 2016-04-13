@@ -163,8 +163,8 @@ Obfuscated Data in the ``course`` File
 =======================================
 
 An ``{org}-{course}-course-{site}-analytics.xml.tar.gz`` file is provided for
-each course. This compressed file exports of all of a course's content in a set
-of JSON and XML files.
+each course. This compressed file contains exports of all of a course's content
+in a set of JSON and XML files.
 
 .. note:: EdX does not support imports of ``course`` files that contain
  obfuscated data.
@@ -514,10 +514,11 @@ The following data is not included in RDX packages.
 *  The email opt in report in the ``{org}-email_opt_in-{site}-analytics.csv``
    file . For more information about this report, see :ref:`Institution_Data`.
 
+* The SQL tables in the data schema for the edX open response assessment (ORA)
+  system. For more information about this data schema, see :ref:`ORA2 Data`.
+
 * The ``user_id_map`` SQL table. For more information about this table, see
   :ref:`user_id_map`.
-
-.. Question to Brian about ORA and this table
 
 ******************************
 Obfuscated Discussion Data
@@ -563,8 +564,6 @@ documents, see :ref:`Discussion Forums Data`.
 For more information about how edX changes the data in these fields, see
 :ref:`Data Obfuscation Methods`.
 
-.. Gabe's work that involves "finding potentially sensitive metadata in course exports and removing it. This is done for both course structure and for course content. It involves applying a whitelist of known xblocks with permitted attributes and children, and anything not on the list is removed. It also involves scrubbing the course policy file " TBD
-
 ************************************
 Types of Event Data in RDX Packages
 ************************************
@@ -578,8 +577,8 @@ RDX data packages include both explicit events and implicit events.
 * Implicit events are automatically generated. To provide information that can
   help researchers understand learner navigation sequences, RDX packages
   include implicit events that record actions in areas of the LMS that are not
-  currently instrumented to generate explicit events. This section includes a
-  list of the implicit events that are included in the RDX package.
+  currently instrumented to generate explicit events. This section lists the
+  implicit events that are included in the RDX package.
 
 The following topics list the implicit events that are included in RDX data
 packages.
@@ -588,11 +587,12 @@ packages.
    :local:
    :depth: 1
 
+.. note:: Implicit events are not instrumented by edX and are subject to
+ change at any time.
+
 =====================================
 Implicit Events for Course Navigation
 =====================================
-
-.. question to Victor from Brian: "if we don't document implicit events for regular research packages, should we really be documenting the subset of implicit events we are including in RDX packages? Could we just say that we include a subset of such events, but we don't document them because we really don't support them?""
 
 RDX data packages include implicit events for course navigation that begin with
 these prefixes.
