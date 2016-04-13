@@ -699,7 +699,7 @@ obfuscated when present for any event.
      * - ``context`` Member Field
        - Method
      * - ``client``
-       - Remove ``device``, ``host``, or ``ip`` if present
+       - Remove ``device`` or ``ip`` if present
      * - ``host``
        - Remove
      * - ``ip``
@@ -709,7 +709,7 @@ obfuscated when present for any event.
      * - ``user_id``
        - Remap
      * - ``username``
-       - Remove
+       - Remap (same as ``auth_user.username``)
 
 For more information about how edX changes the data in these fields, see
 :ref:`Data Obfuscation Methods`.
@@ -722,10 +722,9 @@ The following table lists member fields of the ``event`` field that are
 obfuscated when present for any event.
 
 .. note:: To search for string values to replace, the obfuscation process
-  recursively traverses the entire event data structure. This table includes a
-  representative set of event member fields that typically include data that is
-  replaced. Additional event member fields can also include data that is
-  replaced.
+  recursively traverses the entire event data structure. This table lists
+  event member fields that typically include data that is removed or remapped.
+  Additional event member fields can also include data that is replaced.
 
   .. list-table::
      :widths: 25 65
@@ -735,18 +734,10 @@ obfuscated when present for any event.
        - Method
      * - ``answer.file_upload_key``
        - Remove
-     * - ``answer.text``
-       - Replace
-     * - ``body``
-       - Replace
      * - ``certificate_id``
        - Remove
      * - ``certificate_url``
        - Remove
-     * - ``feedback``
-       - Replace
-     * - ``feedback_text``
-       - Replace
      * - ``fileName``
        - Remove
      * - ``GET``
@@ -761,16 +752,10 @@ obfuscated when present for any event.
        - Remove
      * - ``saved_response.file_upload_key``
        - Remove
-     * - ``saved_response.text``
-       - Replace
      * - ``student``
        - Remap (same as ``auth_user.username``)
-     * - ``student_answer``
-       - Replace
      * - ``source_url``
        - Remove
-     * - ``title``
-       - Replace
      * - ``url``
        - Remove
      * - ``url_name``

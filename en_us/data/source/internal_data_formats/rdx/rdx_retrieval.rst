@@ -30,8 +30,10 @@ identifies courses that meet these specifications and, on approval, assigns an
 RDX request ID to the project.
 
 EdX provides a single RDX data package for each approved project. The RDX
-package contains all SQL table and event data for all of the courses in the
-project. On AWS, data czars can identify the RDX packages by request ID.
+package contains all of the data files, after the :ref:`data obfuscation
+procedures<Data Obfuscation Procedures for RDX>` are applied, for all of the
+courses in the project. On AWS, data czars can identify the RDX packages by
+request ID.
 
 .. _Amazon S3 Buckets and Directories for RDX Data:
 
@@ -41,11 +43,10 @@ Locating RDX Data on Amazon S3
 
 EdX uploads RDX data packages to an Amazon S3
 ``s3://edx-course-data/{org}/rdx/{requestID}`` folder. This folder contains
-one ``{org}_{course}_{run}.tar.gz.gpg`` file for each of the courses in the
-project.
+one ``{org}_{course}_{run}.tar.gz.gpg`` file for each of the requested courses.
 
-The ``{org}_{course}_{run}.tar.gz.gpg`` file contains a database file and the
-daily event files for the requested time period in the course's history.
+The ``{org}_{course}_{run}.tar.gz.gpg`` file contains data and event files for
+the requested time period in the course's history.
 
 .. _Download an RDX Package from Amazon S3:
 
@@ -110,4 +111,5 @@ state data for the requested time period.
         ...
 
 The ``metadata_file.json`` file provides information about the version of the
-edX analytics pipeline that was in use when edX obfuscated the in the package.
+edX analytics pipeline that was in use when edX obfuscated PII and other
+sensitive values in the package.
