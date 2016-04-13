@@ -21,7 +21,7 @@ The following topics describe the data obfuscation procedures.
 Data Obfuscation Methods
 **************************
 
-To obfuscate PII and other sensitive informaiton in RDX data packages, edX
+To obfuscate PII and other sensitive information in RDX data packages, edX
 uses these methods to modify data.
 
 .. contents::
