@@ -7,7 +7,8 @@ Data Obfuscation Procedures for RDX
 To receive RDX data, researchers who are approved for a research project must
 work with their institution's data czar. Before delivering data through this
 program, edX works to obscure personally identifying information (PII) by
-obfuscating obvious identifiers.
+obfuscating obvious identifiers. EdX executes the obfuscation process on every
+XBlock in the course, including the course itself.
 
 The following topics describe the data obfuscation procedures.
 
@@ -141,20 +142,30 @@ Obfuscated Data in the ``course_structure`` File
 ==================================================
 
 An ``{org}-{course}-{date}-course_structure-{site}-analytics.json`` file is
-provided for each course. Its ``metadata.advanced_modules`` member field stores
-course settings, which can contain sensitive data such as the password used to
-authenticate a third party service for the course.
+provided for each course. Its ``metadata`` member field stores course settings
+that can contain sensitive data such as the password used to authenticate a
+third party service for the course.
 
 Before packaging this file for an RDX research project, edX obfuscates data as
 follows.
 
 * EdX only includes an approved subset of the settings that can be defined in
-  the ``metadata.advanced_modules`` array.
+  the ``metadata`` object.
 
-* EdX removes all of the other fields found in this array.
+* EdX removes all of the other fields found in this object.
 
 * A new field, ``redacted_metadata``, is added to the file. This JSON array
   lists all of the fields that edX removed.
+
+  An example follows.
+
+  ::
+
+    {
+      "category": "course",
+      "metadata": {...},
+      "redacted_metadata": ["field_name"]
+    }
 
 For more information about this file, see :ref:`course_structure`.
 
@@ -176,6 +187,17 @@ Like the ``course_structure`` file, the ``policy.json`` file found in the
 ``course`` file stores course-level settings. EdX uses the same procedure
 described for :ref:`Obfuscated Data in the course_structure File` to remove
 data from this file.
+
+After processing, the ``redacted_attributes`` array lists any field names that
+the obfuscation process removed.
+
+::
+
+ {
+    "course/course_name": {
+        "redacted_attributes": ["setting_name"]
+    }
+ }
 
 For more information about this file, see :ref:`olx:Course Policies`.
 
