@@ -13,7 +13,7 @@ is needed.
    :depth: 1
 
 For procedures about how to upgrade all Open edX instances that follow master,
-see :ref:`CSMHE Migration Procedures`.
+see :ref:`CSMHE Procedures`.
 
 .. note:: No changes are required or supported at this time for Open edX
  installations that use the **Dogwood** release. For those installations, the
@@ -65,7 +65,7 @@ must be created in a new database, ``edxapp_csmh``. The new database will
 coexist alongside the existing ``edxapp`` database.
 
 Depending on your operational needs, you can either create this database in
-your existing database infrastructure or stand up new database server.
+your existing database infrastructure or stand a new database server up.
 
 EdX chose to set up a new database to address several requirements.
 

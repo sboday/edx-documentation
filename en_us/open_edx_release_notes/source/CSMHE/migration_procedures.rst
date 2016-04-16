@@ -166,11 +166,12 @@ create the new table. To do so, you can use one of these options.
 
 * Run Django migrations to create the
   ``coursewarehistoryextended_studentmodulehistoryextended`` table. The
-  ``edxapp.yml`` playbook uses these scripts to run migrations.
+  `edxapp.yml playbook`_ uses these scripts to run migrations.
   * ``/edx/bin/edxapp-migrate-lms``
   * ``/edx/bin/edxapp-migrate-cms``
 
-* Run migrations manually. For more information, see :ref:`Run Migrations Manually`.
+* Run migrations manually. For more information, see :ref:`Run Migrations
+  Manually`.
 
 After you bring your servers back online with this configuration, the system
 only writes records for interactions with CAPA problems to the
@@ -211,7 +212,7 @@ Table`.
  require the operational benefits described in the :ref:`Why Is A New Database
  Needed` topic.
 
-.. _Options for Creating the Table:
+.. _Script Options for Migrating Data:
 
 =====================================
 Script Options for Migrating Data
@@ -232,7 +233,7 @@ applies to your database architecture.
 
 Both options require your installation to be running a deploy of Open edX that
 writes only to ``coursewarehistoryextended_studentmodulehistoryextended``. You
-can :ref:`restart<Restart the Migration>`` both migrations if necessary.
+can :ref:`restart<Restart a Migration>` either of the migrations if necessary.
 
 Run the Script for Separate Database Servers
 *********************************************
@@ -268,10 +269,10 @@ Run the Script for A Single Database Server
 
 Run ``migrate-same-database-instance.sh``.
 
-.. _Restart the Migration:
+.. _Restart a Migration:
 
 ======================
-Restart the Migration
+Restart a Migration
 ======================
 
 If you need to restart either migration, you can use the following command to
@@ -317,6 +318,6 @@ Select one of the available MySQL techniques for slowly draining the
 
 .. _migration scripts: https://github.com/edx/configuration/blob/master/util/csmh-extended
 
-.. _edxapp playbook: https://github.com/edx/configuration/blob/master/playbooks/edx-east/edxapp.yml
+.. _edxapp.yml playbook: https://github.com/edx/configuration/blob/master/playbooks/edx-east/edxapp.yml
 
 .. _create_db_and_users.yml playbook:   https://github.com/edx/configuration/blob/master/playbooks/edx-east/create_db_and_users.yml

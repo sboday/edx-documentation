@@ -74,6 +74,10 @@ A system with this configuration writes to the new
 ``coursewarehistoryextended_studentmodulehistoryextended`` table only, but
 queries both tables.
 
+.. note:: Only set ``ENABLE_READING_FROM_MULTIPLE_HISTORY_TABLES`` to
+  ``true``  for an existing site that does not choose the data migration
+  option. For new installations, this setting should be ``false``.
+
 .. _Migrate All Data to One Table:
 
 ******************************
