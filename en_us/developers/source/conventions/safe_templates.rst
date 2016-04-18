@@ -612,14 +612,14 @@ Mako Defs
 ~~~~~~~~~
 
 In a Mako ``%def`` we encounter one of the rare cases where we need to turn off
-default HTML-escaping using ``| n, unicode``. In the example below, this is
+default HTML-escaping using ``| n, decode.utf8``. In the example below, this is
 done because the expression assumes that the required JavaScript-escaping was
 already performed by the caller.
 
-Be extremely careful when you use ``| n, unicode``, and make sure the originating
-code is properly escaped. Note that the ``n`` filter turns off all default
-filters, including the default ``unicode`` filter, so it is added back
-explicitly. Here is an example.
+Be extremely careful when you use ``| n, decode.utf8``, and make sure the
+originating code is properly escaped. Note that the ``n`` filter turns off all
+default filters, including the default ``decode.utf8`` filter, so it is added
+back explicitly. Here is an example.
 
 .. code-block:: mako
 
@@ -628,7 +628,7 @@ explicitly. Here is an example.
     <%def name="require_module(module_name, class_name)">
         <script type="text/javascript">
             ...
-            ${caller.body() | n, unicode}
+            ${caller.body() | n, decode.utf8}
             ...
         </script>
     </%def>
@@ -1080,8 +1080,8 @@ Mako Filter Ordering and the ``n`` Filter
 =========================================
 
 Mako executes any default filter before it executes filters that are added
-inside an expression. One such default filter is the ``unicode`` filter, which
-is used to decode to UTF-8, but only if the Python object is not already in
+inside an expression. One such default filter is the ``decode.utf8`` filter,
+which is used to decode to UTF-8, but only if the Python object is not already
 unicode.
 
 Take the following example Mako expression.
@@ -1097,11 +1097,12 @@ following Python code.
 
     __M_writer(filters.html_escape(filters.decode.utf8(data)))
 
-From the Python line above, you can see that the default ``unicode`` filter is
-applied before the the ``h`` filter, which was supplied inside the expression.
+From the Python line above, you can see that the default ``decode.utf8`` filter
+is applied before the the ``h`` filter, which was supplied inside the
+expression.
 
 The ``n`` filter can be used to turn off all default filters, including the
-``unicode`` filter. Here is an example Mako expression.
+``decode.utf8`` filter. Here is an example Mako expression.
 
 .. code-block:: mako
 
