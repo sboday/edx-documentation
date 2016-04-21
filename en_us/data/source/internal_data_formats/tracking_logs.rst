@@ -761,7 +761,7 @@ events of this type as for the :ref:`play_video` events.
 * ``id``
 
 ``hide_closed_captions``/``edx.video.closed_captions.hidden``
-***************************************************
+*************************************************************
 
 When a user selects the Closed Captions button to suppress display of the overlay captioning, the
 browser or mobile app emits a ``hide_closed_captions`` event.
@@ -791,6 +791,7 @@ events of this type as for the :ref:`play_video` events.
 
 * ``code``
 * ``id``
+* ``current_time``
 
 ``load_video``/``edx.video.loaded``
 ***********************************
@@ -1215,12 +1216,12 @@ events of this type as for the :ref:`play_video` events.
 * ``id``
 
 ``show_closed_captions``/``edx.video.closed_captions.shown``
-**************************************************
+************************************************************
 
 When a user selects the Closed Captions control to display the closed captions, the browser or
 mobile app emits a ``show_closed_captions`` event.
 
-In addition to the identifying ``event_type`` of ``show_transcript``, events
+In addition to the identifying ``event_type`` of ``show_closed_captions``, events
 that the edX mobile app emits also include a ``name`` field with a value of
 ``edx.video.closed_captions.shown``.
 
@@ -1245,6 +1246,7 @@ events of this type as for the :ref:`play_video` events.
 
 * ``code``
 * ``id``
+* ``current_time``
 
 ``speed_change_video``
 *********************************
@@ -1331,7 +1333,7 @@ this type as for the :ref:`play_video` events.
 
 
 ``video_hide_cc_menu``/``edx.video.language_menu.hidden``
-************************************************
+*********************************************************
 
 When a user selects a language from the language menu for a video that
 has transcripts in multiple languages, the browser emits a
@@ -1356,7 +1358,7 @@ this type as for :ref:`play_video`.
 * ``language``: The selected language of the current video.
 
 ``video_show_cc_menu``/``edx.video.language_menu.shown``
-************************************************
+********************************************************
 
 When a user selects a language from the language menu for a video that has
 transcripts in multiple languages, the browser emits a ``video_show_cc_menu`` event.
@@ -1373,7 +1375,7 @@ that the edX mobile app emits also include a ``name`` field with a value of
 ``event`` **Member Fields**:
 
 The ``video_show_cc_menu``/``edx.video.language_menu.shown`` events include the
-following ``event`` member fields. These fields serve the same purpose for events 
+following ``event`` member fields. These fields serve the same purpose for events
 of this type as for :ref:`play_video`.
 
 * ``code``
