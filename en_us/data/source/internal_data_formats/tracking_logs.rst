@@ -789,6 +789,35 @@ events of this type as for the :ref:`play_video` events.
 * ``id``
 * ``current_time``
 
+``edx.video.closed_captions.shown``
+************************************************************
+
+When a user selects the Closed Captions control to display the closed captions, the browser or
+mobile app emits a ``edx.video.closed_captions.shown`` event.
+
+**Event Source**: Browser or Mobile
+
+**History**: Added on 21 Apr 2016 to include this new event.
+
+``context`` **Member Fields**:
+
+Only video interaction events with an ``event_source`` of 'mobile' include
+additional ``context`` member fields in addition to the :ref:`common<context>`
+member fields. The same set of additional context fields are added for
+``edx.video.closed_captions.shown`` events as for
+:ref:`play_video`. For an example of an event with these fields, see
+:ref:`Example Mobile App Event`.
+
+``event`` **Member Fields**:
+
+The ``edx.video.closed_captions.shown`` events include the
+following ``event`` member fields. These fields serve the same purpose for
+events of this type as for the :ref:`play_video` events.
+
+* ``code``
+* ``id``
+* ``current_time``
+
 ``load_video``/``edx.video.loaded``
 ***********************************
 
@@ -1211,34 +1240,6 @@ events of this type as for the :ref:`play_video` events.
   opened.
 * ``id``
 
-``edx.video.closed_captions.shown``
-************************************************************
-
-When a user selects the Closed Captions control to display the closed captions, the browser or
-mobile app emits a ``edx.video.closed_captions.shown`` event.
-
-**Event Source**: Browser or Mobile
-
-**History**: Added on 21 Apr 2016 to include this new event.
-
-``context`` **Member Fields**:
-
-Only video interaction events with an ``event_source`` of 'mobile' include
-additional ``context`` member fields in addition to the :ref:`common<context>`
-member fields. The same set of additional context fields are added for
-``edx.video.closed_captions.shown`` events as for
-:ref:`play_video`. For an example of an event with these fields, see
-:ref:`Example Mobile App Event`.
-
-``event`` **Member Fields**:
-
-The ``edx.video.closed_captions.shown`` events include the
-following ``event`` member fields. These fields serve the same purpose for
-events of this type as for the :ref:`play_video` events.
-
-* ``code``
-* ``id``
-* ``current_time``
 
 ``speed_change_video``
 *********************************
@@ -1337,11 +1338,15 @@ that the edX mobile app emits also include a ``name`` field with a value of
 
 **Event Source**: Browser
 
-**History**: Updated 21 Apr 2016 to include the ``name`` value. Added 17 Feb 2015.
+**History**: Updated 21 Apr 2016 to include the ``name`` value. Note that older
+tracking logs will still utilize the ``event_type`` value. Also note that from
+Fall 2015 until 21 Apr 2016, this event was emitted incorrectly and events may
+have been emitted even when the language menu wasn't being triggered.
+Added 17 Feb 2015.
 
 ``event`` **Member Fields**:
 
-The ``video_hide_cc_menu``/``edx.video.language_menu.hidden events include the
+The ``video_hide_cc_menu``/``edx.video.language_menu.hidden`` events include the
 following ``event`` member fields. These fields serve the same purpose for events of
 this type as for :ref:`play_video`.
 
@@ -1362,7 +1367,11 @@ that the edX mobile app emits also include a ``name`` field with a value of
 
 **Event Source**: Browser
 
-**History**: Updated 21 Apr 2016 to include the ``name`` value. Added 17 Feb 2015.
+**History**: Updated 21 Apr 2016 to include the ``name`` value. Note that older
+tracking logs will still utilize the ``event_type`` value. Also note that from
+Fall 2015 until 21 Apr 2016, this event was emitted incorrectly and events may
+have been emitted even when the language menu wasn't being triggered.
+Added 17 Feb 2015.
 
 ``event`` **Member Fields**:
 
