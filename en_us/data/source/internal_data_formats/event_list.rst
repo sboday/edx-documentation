@@ -249,9 +249,9 @@ D, E, F
    * - ``edx.video.bumper.transcript.shown``
      - :ref:`pre-roll`
    * - ``edx.video.closed_captions.hidden``
-     - :ref:`video`, see ``hide_closed_captions``
+     - :ref:`video`
    * - ``edx.video.closed_captions.shown``
-     - :ref:`video`, see ``show_closed_captions``
+     - :ref:`video`
    * - ``edx.video.loaded``
      - :ref:`video`, see ``load_video``
    * - ``edx.video.paused``
