@@ -88,8 +88,8 @@ lists a **Studio** URL and a **Web** URL for each file you upload.
 
 * To provide a link to the file or image from outside the course, including in
   the body of an email message that you send to course participants from the
-  LMS, you use the **Web** URL. Do not use the ``/static/`` URL in an email
-  message.
+  LMS, you use the **Web** URL. Be sure that you do not use the ``/static/``
+  URL in an email message.
 
   For more information about sending email messages, see
   :ref:`Send_Bulk_Email`.

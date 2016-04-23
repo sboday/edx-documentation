@@ -5,7 +5,7 @@ Bulk Email
 ##############################
 
 For courses on edx.org, you can send bulk email messages to course
-participants directly from the Instructor Dashboard. Messages can use HTML
+participants directly from the instructor dashboard. Messages can use HTML
 styling, and can include links to videos, social media pages for the course,
 and other material. All course contributors who are assigned the Staff or
 Admin role can use bulk emails to communicate with course participants before,
@@ -27,7 +27,7 @@ This section contains the following topics.
 Message Addressing
 *************************
 
-When you send an email message from the Instructor Dashboard, you choose its
+When you send an email message from the instructor dashboard, you choose its
 recipients by selecting one of these predefined groups.
 
 * **Myself**, to test out a message before sending it to a larger group.
@@ -52,11 +52,10 @@ yourself first for thorough testing.
 .. _Options for Email Message Text:
 
 *******************************
-Options for Email Message Text
+Composing Email Messages
 *******************************
 
-When you compose an email message, you can take advantage of the following
-options.
+When you compose an email message, you can use the following options.
 
 .. contents::
   :local:
@@ -82,7 +81,7 @@ the **Web** URL that the system assigns to the image. Then, in the email
 message editor, you select the **Insert/edit image** icon to add the web URL.
 
 .. note:: To ensure that your course assets are transmitted securely, add the
-``https://`` preface to the web URL. An example follows.
+  ``https://`` preface to the web URL. An example follows.
 
   ::
 
@@ -95,8 +94,8 @@ Keywords
 =========
 
 Messages can include variables that represent values that are specific to each
-message recipient, such as learner name or user ID. These variables, called
-keywords, are substituted in the message text when a message is sent.
+message recipient, such as learner name or user ID. The LMS substitutes these
+variables, called keywords, with actual values when it sends a message.
 
 For more information, see :ref:`Use Keywords in Messages`.
 
@@ -115,13 +114,13 @@ To send an email message to course participants, follow these steps.
 #. Select who you want to send the message to from the **Send to** drop-down
    list. You select from the following options.
 
-  * **Myself**
-  * **Staff and admins**
-  * **All (students, staff and admins)**
+   * **Myself**
+   * **Staff and admins**
+   * **All (students, staff and admins)**
 
-  .. note:: Errors in bulk email messages can be very visible. As a best
-   practice, be sure to send the message to yourself first for review and
-   testing.
+   .. note:: Errors in bulk email messages can be very visible. As a best
+    practice, be sure to send the message to yourself first for review and
+    testing.
 
 #. Enter a **Subject** for the message. A subject is required.
 
