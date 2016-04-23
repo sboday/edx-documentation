@@ -80,10 +80,10 @@ to your course on the **Files & Uploads** page. For an email message, you copy
 the **Web** URL that the system assigns to the image. Then, in the email
 message editor, you select the **Insert/edit image** icon to add the web URL.
 
-.. note:: To ensure that your course assets are transmitted securely, add the
-  ``https://`` preface to the web URL. An example follows.
+To ensure that your course assets are transmitted securely, add the
+``https://`` preface to the web URL. An example follows.
 
-  ::
+::
 
     https://courses.edx.org/asset-v1:{course}.x+{run}+type@asset+block@{image}.jpg
 
