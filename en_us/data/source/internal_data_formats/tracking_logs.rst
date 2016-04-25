@@ -792,7 +792,7 @@ events of this type as for the :ref:`play_video` events.
 ``edx.video.closed_captions.shown``
 ************************************************************
 
-When a user toggles **Closed Captions** display the closed captions, the browser or
+When a user toggles **Closed Captions** to display the closed captions, the browser or
 mobile app emits an ``edx.video.closed_captions.shown`` event.
 
 **Event Source**: Browser or Mobile
@@ -1328,13 +1328,14 @@ this type as for the :ref:`play_video` events.
 ``video_hide_cc_menu``/``edx.video.language_menu.hidden``
 *********************************************************
 
-When a user selects a language from the **Language Menu** for a video that
+When a user closes the **Language Menu** for a video that
 has transcripts in multiple languages, the browser emits a
 ``video_hide_cc_menu`` event.
 
 In addition to the identifying ``event_type`` of ``video_hide_cc_menu``, events
 that the edX mobile app emits also include a ``name`` field with a value of
-``edx.video.language_menu.hidden``.
+``edx.video.language_menu.hidden`` and the selected language is included in the 
+event.
 
 **Event Source**: Browser
 
@@ -1357,9 +1358,9 @@ this type as for :ref:`play_video`.
 ``video_show_cc_menu``/``edx.video.language_menu.shown``
 ********************************************************
 
-When a user selects a language from the **Language Menu** for a video that has
-transcripts in multiple languages, the browser emits a ``video_show_cc_menu`` event.
-This event is emitted in addition to the ``show_transcript`` event.
+When a user opens the **Language Menu** for a video that
+has transcripts in multiple languages, the browser emits a
+``video_show_cc_menu`` event.
 
 In addition to the identifying ``event_type`` of ``video_show_cc_menu``, events
 that the edX mobile app emits also include a ``name`` field with a value of
@@ -1370,7 +1371,7 @@ that the edX mobile app emits also include a ``name`` field with a value of
 **History**: Updated 21 Apr 2016 to include the ``name`` value. Note that older
 tracking logs will still utilize the ``event_type`` value. Also note that from
 Fall 2015 until 21 Apr 2016, this event was emitted incorrectly and events may
-have been emitted even when the language menu wasn't being triggered.
+have been emitted even when the language menu was not triggered.
 Added 17 Feb 2015.
 
 ``event`` **Member Fields**:
