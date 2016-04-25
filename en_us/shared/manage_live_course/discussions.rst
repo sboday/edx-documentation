@@ -8,9 +8,7 @@ Discussions, or discussion forums, foster interaction among learners and
 between learners and the course team. You can set up different topics to guide
 these interactions when you create your course, and then run and moderate
 discussions throughout the course to encourage participation and develop course
-community.
-
-Discussions are also excellent sources of feedback and ideas for the future.
+community. Discussions are also excellent sources of feedback and ideas for the future.
 
 For information about running and moderating discussions, see the following
 sections.
@@ -18,6 +16,9 @@ sections.
 .. contents::
  :local:
  :depth: 1
+
+For information about the differences between discussions on the edx.org site
+and in the mobile apps, see :ref:`Discussions on Mobile Apps`.
 
 For information about how using cohorts in your course affects how your course
 team might moderate course discussions, see :ref:`Moderating Discussions for
@@ -226,13 +227,12 @@ Components`. The result is a discussion topic associated with a unit and its
 content.
 
 .. warning:: Follow the recommended steps to add discussion components. Do not
-   create discussion topics by using the **Duplicate** button in Studio, and
-   do not reference the same discussion ID in more than one place in your
-   course. Duplicated discussion components will result in discussion topics
-   containing the same conversations, even if learners post in different
-   discussion topics.
+   create discussion topics by using the **Duplicate** button in Studio, and do
+   not reference the same discussion ID in more than one place in your course.
+   Duplicated discussion components result in discussion topics that contain the
+   same conversations, even if learners post in different discussion topics.
 
-For more information about the visibility of content-specific discussion
+For information about the visibility of content-specific discussion
 topics, see :ref:`Visibility of Discussion Topics`.
 
 .. note:: In courses with cohorts enabled, all content-specific discussion
@@ -242,6 +242,11 @@ topics, see :ref:`Visibility of Discussion Topics`.
    role. You can change the configuration of content-specific discussion topics
    to make them unified and available to all learners in the course. For more
    information, see :ref:`Content Specific Discussion Topics and Cohorts`.
+
+.. note:: When learners access courses using the edX mobile apps, content-
+   specific discussion topics cannot currently be viewed "inline" as part of
+   the course content, although they can be viewed along with course-wide
+   discussions on the **Discussion** page.
 
 .. _Assigning_discussion_roles:
 
@@ -255,12 +260,7 @@ working with posts, responses, and comments.
 
 
 .. important:: The course team members that you set up in Studio or on the
- Instructor Dashboard are not automatically granted discussion administration
- roles.
-
-
-.. note:: The members of the course team that you set up in Studio or on the
-   Instructor Dashboard in the LMS are not automatically granted discussion
+   Instructor Dashboard are not automatically granted discussion
    administration roles.
 
    Discussion administration roles must be explicitly granted to members of the
@@ -268,9 +268,15 @@ working with posts, responses, and comments.
    The course author and any team members who have the Admin role can grant
    discussion administration roles.
 
-
 Different options for working with discussions are available through
 the following roles.
+
+.. note:: The options for moderating discussions described below are only
+    available when members of the discussion administration team work in a web
+    browser. The edX mobile apps do not currently offer moderation options.
+
+   For more information about differences between discussions on the edx.org
+   site and on the mobile apps, see :ref:`Discussions on Mobile Apps`.
 
 * Discussion moderators can edit and delete messages at any level, review
   messages flagged for misuse, close and reopen posts, pin posts, and endorse
@@ -300,15 +306,6 @@ the following roles.
   who have the Admin role only: the discussion admins can then both
   moderate discussions and give other users discussion management roles
   whenever necessary.
-
-.. The following paragraph applies to the edX mobile app for Open edX (with discussions)
-.. Alison, DOC-1815, June 2015
-
-.. only:: Open_edX
-
-  .. note:: The options for working with discussions described above are only
-    available when members of the discussion administration team work in a web
-    browser. The edX mobile apps do not currently offer the additional options.
 
 Before you can assign roles to your discussion team, you need their email
 addresses or usernames.
@@ -845,5 +842,23 @@ reopen, follow these steps.
 For examples of email messages that you can send to let learners know when the
 course discussions are closed (or open), see :ref:`Example Messages to
 Students`.
+
+
+.. _Discussions on Mobile Apps:
+
+***************************************
+Discussions on the edX Mobile Apps
+***************************************
+
+Learners can participate in course discussions on the edX mobile apps as they
+do on the site, but there are some differences in the actions that moderators
+can take in discussions on the mobile apps.
+
+
+
+
+
+
+
 
 .. include:: ../../../links/links.rst
