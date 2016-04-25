@@ -67,15 +67,6 @@ Members of the course community, learners as well as the course team, can be
 given permission to moderate or administer course discussions through a set of
 discussion administration roles.
 
-.. note:: Options for moderating discussions are only available when members
-   of the discussion administrators work in a web browser. The edX mobile apps
-   do not currently offer moderation options.
-
-.. note:: Not all options for moderating discussions are available when
-.. discussions are accessed using the edX mobile apps. For information about
-.. the differences between discussions on the edx.org site and in the mobile
-.. apps, see :ref:`Discussions on Mobile Apps`.
-
 .. note:: The course team members that you set up in Studio or on the
    Instructor Dashboard in the LMS are not granted discussion administration
    roles automatically. Only people who have a discussion administration role
@@ -87,6 +78,11 @@ discussion administration roles.
    course author, and any team members with the Admin role, can grant
    discussion administration roles. For information about assigning discussion
    privileges, see :ref:`Assigning_discussion_roles`.
+
+.. note:: Not all options for moderating discussions are available when
+   discussions are accessed using the edX mobile apps. For information about
+   the differences between discussions on the edx.org site and in the mobile
+   apps, see :ref:`Discussions on Mobile Apps`.
 
 .. _Organizing_discussions:
 
