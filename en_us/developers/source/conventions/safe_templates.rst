@@ -897,14 +897,21 @@ cause issues for certain expression, including HTML that cannot be escaped.
 Also, be careful not to have multiple ``<%page>`` tags in a Mako template.
 
 
-Run Safe Template Linter
-========================
+Run the Safe Template Linter
+============================
 
-After setting HTML-escaping by default for the Mako template, follow the
-instructions for using the :ref:`Safe Template Linter`. Accuracy and
-completeness of the linter are not guaranteed, so test your work after fixing
-all violations.
+After setting HTML-escaping by default for the Mako template, run the Safe
+Template Linter with the following command.
 
+.. code-block:: bash
+
+    ./scripts/safe_template_linter.py
+
+Accuracy and completeness of the linter are not guaranteed, so test your work
+after fixing all violations.
+
+For more detailed instructions on using the linter, see :ref:`Safe Template
+Linter`.
 
 Fix Downstream JavaScript and Underscore.js Templates
 =====================================================
@@ -926,21 +933,58 @@ Safe Template Linter
 ********************
 
 The safe template linter is a tool to help you make sure that you are
-following best practices.
+following best practices inside edx-platform. It is not yet possible to run the
+linter against other repositories.
 
-For help with running the linter, use the following command.
-
-.. code-block:: bash
-
-    edxapp@precise64:~/edx-platform$ ./scripts/safe_template_linter.py --help
-
-If you would like to run the linter on all the git files you have changed, you
-can instead use the following command, which in turn calls the safe template
-linter.
+To run the linter on all of edx-platform, use the following command.
 
 .. code-block:: bash
 
-    edxapp@precise64:~/edx-platform$ ./scripts/safe-commit-linter.sh
+    ./scripts/safe_template_linter.py
+
+You can also lint an individual file or directory. Here is an example of how to
+lint a single file.
+
+.. code-block:: bash
+
+    ./scripts/safe_template_linter.py --file cms/templates/base.html
+
+For additional options running the linter, use the following command.
+
+.. code-block:: bash
+
+    ./scripts/safe_template_linter.py --help
+
+To run the linter on the changes in your current Git branch, use the following
+command.
+
+.. code-block:: bash
+
+    ./scripts/safe-commit-linter.sh
+
+The following is some sample output from the linter.
+
+.. code-block:: bash
+
+    lms/templates/courseware/courseware-error.html: 17:7: mako-wrap-html:       ${_('There has been an error on the {platform_name} servers').format(
+    lms/templates/courseware/courseware-error.html: 18:1:                           platform_name=u'<span class="edx">{}</span>'.format(settings.PLATFORM_NAME)
+    lms/templates/courseware/courseware-error.html: 19:1:                       )}
+
+Each line of linter output has the following parts.
+
+#. The path of the file containing the violation.
+
+#. The line number and column, for example ``17:7`` above, where the
+   violation begins. In the case of Mako expressions, this will be the start
+   of the entire expression.
+
+#. An id like ``mako-wrap-html`` that represents the particular type of
+   violation. This only appears on the first line of the violation.
+   Additional lines may appear for context only. For more details on
+   individual violations, run the linter with ``--help``, or see :ref:`Linter
+   Violations`.
+
+#. The full line of code found at the provided line number.
 
 This linter is relatively new, so if you see excessive false positives, like a
 directory that should possibly be skipped, please provide feedback. The same is
@@ -970,6 +1014,8 @@ Here is example syntax for an Underscore.js template.
 
     <% // safe-lint: disable=underscore-not-escaped %>
 
+.. _Linter Violations:
+
 Linter Violations
 =================
 
@@ -980,9 +1026,9 @@ Linter Violations
 javascript-concat-html
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Use ``HtmlUtils.interpolateHtml()`` or ``HtmlUtils.joinHtml()`` in place of
-concatenating strings with HTML. For more details, see :ref:`Safe JavaScript
-Files`.
+Do not use ``+`` concatenation on strings that contain HTML. Instead, use
+``HtmlUtils.interpolateHtml()`` or ``HtmlUtils.joinHtml()``. For more details on
+proper use of ``HtmlUtils``, see :ref:`Safe JavaScript Files`.
 
 javascript-escape
 ~~~~~~~~~~~~~~~~~
@@ -1004,21 +1050,21 @@ For interpolation in JavaScript, use ``StringUtils.interpolate()`` or
 javascript-jquery-append
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-In place of JQuery's ``append()`` function, you can use ``HtmlUtils.append()``
-which respects HTML snippets and thus is more safe. An alternative is to use the
-``toString()`` function of any ``HtmlUtils`` call inside the JQuery ``append()``
-call.
+Do not use JQuery's ``append()`` with an argument that may contain unsafe HTML.
+The linter allows a limited number of ways of coding with ``append()`` that it
+considers safe. Each of these safe techniques are detailed below.
 
-Here is an example with a violation.
+Here is some example code with a violation.
 
 .. code-block:: javascript
 
-    // DON'T do this
+    // Do NOT do this
     self.$el.append(
         _.template(teamActionsTemplate)({message: message})
     );
 
-The following is safe.
+One way to make this safe is by replacing the ``append()`` call with a call to
+``HtmlUtils.append()``, as seen in this example.
 
 .. code-block:: javascript
 
@@ -1028,7 +1074,9 @@ The following is safe.
         HtmlUtils.template(teamActionsTemplate)({message: message})
     );
 
-This would also be safe.
+Another way to make this safe is to continue to use JQuery's ``append()``, but
+to supply it the result of calling ``toString()`` on any ``HtmlUtils`` call, as
+in the following example.
 
 .. code-block:: javascript
 
@@ -1041,7 +1089,7 @@ You can also use JQuery ``append()`` with variables that represent an element,
 as designated by starting with a ``$`` or ending in ``El``, like ``$element`` or
 ``sampleEl``. You can also use the ``$el`` element from Backbone.js.
 
-Here is a safe example with one of these variables.
+Here is an example with one of the above mentioned safe variables.
 
 .. code-block:: javascript
 
@@ -1088,7 +1136,7 @@ considered unsafe:
 
 .. code-block:: javascript
 
-    // DON't do this
+    // Do NOT do this
     this.button.after(message);
 
 Instead, you could refactor to create ``liveRegion`` using ``HtmlUtils``, and
@@ -1106,7 +1154,9 @@ following example.
 javascript-jquery-prepend
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Use the ``prepend()`` equivalents to ``append()``, as described in
+Do not use JQuery's ``prepend()`` with an argument that may contain unsafe HTML.
+The linter allows a limited number of ways of coding with ``prepend()`` that it
+considers safe. For details of these safe techniques, see those described for
 :ref:`javascript-jquery-append`.
 
 mako-html-alone
@@ -1130,7 +1180,7 @@ Here is a violation as an example.
 
 .. code-block:: mako
 
-    ## DON'T do this
+    ## Do NOT do this
     ${_("Details &amp; Schedule")}
 
 Instead, you should have the following.
@@ -1154,7 +1204,7 @@ The following example is a violation.
 
 .. code-block:: mako
 
-    ## DON'T do this
+    ## Do NOT do this
     ${_("Click over to {link_start}the home page{link_end}.").format(
         link_start=HTML('<a href="/home">'),
         link_end=HTML('</a>'),
@@ -1196,7 +1246,8 @@ make sense, like in certain Mako defs.
 mako-invalid-js-filter
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You must use one of the following legal filters in a JavaScript context.
+There is a limited set of filters that the linter considers safe in a JavaScript
+context, so you must use one of the following safe filters.
 
 .. code-block:: mako
 
@@ -1231,7 +1282,7 @@ Here is a sample violation.
 
 .. code-block:: mako
 
-    // DON'T do this
+    // Do NOT do this
     var invalid = '<strong>${x | n, js_escaped_string}</strong>'
 
 Instead, simplify the data passing from Mako to JavaScript as follows.
@@ -1252,7 +1303,7 @@ quotes.
 
 .. code-block:: mako
 
-    // DON't do this
+    // Do NOT do this
     var message = ${msg | n, js_escaped_string}
 
     // DO this
@@ -1282,7 +1333,7 @@ The following is an example in violation of this rule.
 
 .. code-block:: mako
 
-    ## DON'T do this
+    ## Do NOT do this
     <%page expression_filter="h" />
     ...
     <%page args="section_data" />
@@ -1297,9 +1348,9 @@ Here is this code once it has been fixed.
 mako-text-redundant
 ~~~~~~~~~~~~~~~~~~~
 
-It is unnecessary to you use the ``Text()`` function in a Mako expression when
-you have no need of interpolating HTML with the ``HTML()`` function. It is
-cleaner to leave it out.
+It is unnecessary to use the ``Text()`` function in a Mako expression when you
+have no need of interpolating HTML with the ``HTML()`` function. It is cleaner
+to leave it out.
 
 mako-unparseable-expression
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1329,7 +1380,7 @@ the ``_()`` call, but not the ``Text()`` call.
 
 .. code-block:: mako
 
-    ## DON'T do this
+    ## Do NOT do this
     ${Text(_("Click over to {link_start}the home page{link_end}.").format(
         link_start=HTML('<a href="/home">'),
         link_end=HTML('</a>'),
@@ -1358,7 +1409,7 @@ Take the following violation as an example.
 
 .. code-block:: python
 
-    # DON'T do this
+    # Do NOT do this
     msg = '<html>' + msg + '</html>'
 
 Instead, it is possible to properly HTML-escape ``msg`` as follows.
