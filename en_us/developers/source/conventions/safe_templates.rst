@@ -505,7 +505,7 @@ following example for how to import and use these functions.
     <%!
     from django.utils.translation import ugettext as _
 
-    from openedx.core.djangolib.markup import Text, HTML
+    from openedx.core.djangolib.markup import HTML, Text
     %>
     ...
     ${Text(_("Click over to {link_start}the home page{link_end}.")).format(
@@ -754,7 +754,7 @@ example.
 .. code-block:: javascript
 
     HtmlUtils.setHtml(
-        this.$el.html,
+        this.$el,
         HtmlUtils.joinHtml(
             HtmlUtils.HTML('<p>'),
             gettext('This is the best course.'),
@@ -782,7 +782,7 @@ For more information about URLs, see :ref:`URL Context`.
 .. _JavaScript edx Namespace:
 
 JavaScript ``edx`` Namespace
-============================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you are working with code that does not use RequireJS, then it is not
 possible to import the ``StringUtils`` and ``HtmlUtils`` functions in
@@ -884,108 +884,26 @@ edX portal .
 Set HTML-Escaping Filter as Default
 ===================================
 
-Add the following line to the very top of your template.
+Start by adding the following line to the very top of your Mako template.
 
 .. code-block:: mako
 
     <%page expression_filter="h"/>
 
-If this line has already been added, the process of making the template safe
-by default might have been already completed.
+It is important to understand that this change will affect all expressions in
+your Mako template. Although HTML-escaping is a reasonable default, it also may
+cause issues for certain expression, including HTML that cannot be escaped.
 
-Be careful not to have multiple ``<%page>`` tags in a Mako template.
-
-Search for JavaScript Contexts
-==============================
-
-Search for any JavaScript contexts in the Mako template. These might appear
-implicitly through the use of ``<%static:require_module>``, or in legacy code,
-explicitly through the use of a ``<script>`` tag.
-
-Check that all Mako expressions (``${}``) in these JavaScript contexts are
-using either ``| n, dump_js_escaped_json`` or ``| n, js_escaped_string``, as
-detailed in :ref:`JavaScript Context in Mako`. For strings, use
-``js_escaped_string`` with quotes around the expression, rather than
-``dump_js_escaped_json``.
-
-Take note of any expression that was mistakenly using ``| h`` in a JavaScript
-context. Although you likely just fixed a bug, you will want to pay extra
-attention to the downstream JavaScript that is rendering this data and double-
-check that it is being properly escaped. It might not be, because it would
-have caused a double-escaping issue as it was.
+Also, be careful not to have multiple ``<%page>`` tags in a Mako template.
 
 
-Remove All ``h`` Filters
+Run Safe Template Linter
 ========================
 
-Review the page for any Mako expressions that have an ``h`` filter and remove
-this redundant HTML-escaping.
-
-Before::
-
-    ${data | h}
-
-After::
-
-    ${data}
-
-Pay special attention when you are removing ``| h`` in a JavaScript context
-because you will likely need to add this escaping back in a downstream
-JavaScript file or Underscore.js template.
-
-
-Fix Translations That Contain HTML Tags
-=======================================
-
-Search the page for calls to ``_()`` that have replacement strings that
-contain actual HTML tags (such as ``<strong>``). For these cases, you must use
-both the ``HTML()`` and ``Text()`` functions as documented in :ref:`i18n`.
-
-
-Remove Calls to ``display_name_with_default_escaped``
-======================================================
-
-The XBlock function ``display_name_with_default_escaped`` has been deprecated
-and should not be used. Instead, you must use the call
-``display_name_with_default`` and follow the best practices for proper
-escaping based on the context.
-
-It might be that ``display_name_with_default_escaped`` was called from Python
-while setting up the context for your Mako template. You still must fix this
-to be ``display_name_with_default`` and make sure it is properly escaped in
-the Mako template.
-
-Take note of any places where this value was used in a JavaScript context. You
-must make sure that this data is properly escaped downstream when it is
-finally added to the page (for example, in an Underscore.js template).
-
-
-Fix Custom Escaping
-===================
-
-One example of custom escaping is when the code includes ``&amp;`` directly in a
-string. These should be removed.
-
-Before::
-
-    ${_("Files &amp; Uploads")}
-
-After::
-
-    ${_("Files & Uploads")}
-
-Another example of custom escaping is if you have a string that was already
-escaped through a call such as ``replace('<', '&lt;')``.
-
-Again, the preferred solution is to not escape the string at all until you are
-in the template, and then to escape only using the best practices previously
-detailed.
-
-If a string absolutely must be HTML-escaped before getting to the template, you
-should use some combination of ``Text()`` and ``HTML()`` provided for use with
-translations. Also, you should name any such variable with the suffix ``_html``
-to make it clear that it contains HTML that was already escaped. For more
-information, see :ref:`i18n`.
+After setting HTML-escaping by default for the Mako template, follow the
+instructions for using the :ref:`Safe Template Linter`. Accuracy and
+completeness of the linter are not guaranteed, so test your work after fixing
+all violations.
 
 
 Fix Downstream JavaScript and Underscore.js Templates
@@ -996,19 +914,10 @@ ensure that any downstream JavaScript files or Underscore.js templates also
 follow the best practices.
 
 When you have found the proper downstream JavaScript and Underscore.js template
-files, you can follow the best practices as detailed in
-:ref:`Safe JavaScript Files` and :ref:`Safe Underscorejs Template Files`.
+files, you can again run the :ref:`Safe Template Linter` on these files.
 
 For help navigating our client side code, see
 `Navigating JavaScript and Underscore.js Templates <https://openedx.atlassian.net/wiki/x/9QHqAw>`_
-
-
-Run Safe Template Linter
-========================
-
-Follow the instructions for using the :ref:`Safe Template Linter`. Search for
-any rule violations in the files you are working on. Accuracy and completeness
-are not guaranteed, so use the linter just to check your work.
 
 
 .. _Safe Template Linter:
@@ -1019,16 +928,27 @@ Safe Template Linter
 The safe template linter is a tool to help you make sure that you are
 following best practices.
 
-The linter does not yet cover all rules, and should be used in addition to
-following all documented best practices. Additionally, for rules that the
-linter does cover, there is a possibility of false positives, especially with
-the Underscore.js template expressions.
-
 For help with running the linter, use the following command.
 
 .. code-block:: bash
 
     edxapp@precise64:~/edx-platform$ ./scripts/safe_template_linter.py --help
+
+If you would like to run the linter on all the git files you have changed, you
+can instead use the following command, which in turn calls the safe template
+linter.
+
+.. code-block:: bash
+
+    edxapp@precise64:~/edx-platform$ ./scripts/safe-commit-linter.sh
+
+This linter is relatively new, so if you see excessive false positives, like a
+directory that should possibly be skipped, please provide feedback. The same is
+true if you spot an issue that was not caught by the linter. You can reach us
+using the `Getting Help <https://open.edx.org/getting-help>`_ page on the Open
+edX portal.
+
+.. _Disabling Linter Violations:
 
 Disabling Violations
 ====================
@@ -1050,6 +970,471 @@ Here is example syntax for an Underscore.js template.
 
     <% // safe-lint: disable=underscore-not-escaped %>
 
+Linter Violations
+=================
+
+.. contents::
+   :depth: 1
+   :local:
+
+javascript-concat-html
+~~~~~~~~~~~~~~~~~~~~~~
+
+Use ``HtmlUtils.interpolateHtml()`` or ``HtmlUtils.joinHtml()`` in place of
+concatenating strings with HTML. For more details, see :ref:`Safe JavaScript
+Files`.
+
+javascript-escape
+~~~~~~~~~~~~~~~~~
+
+Avoid calls to ``escape()``, especially in Backbone.js. Instead, use the
+Backbone.js model ``get()`` function, and do delayed escaping in the templates.
+You can also use ``HtmlUtils`` functions, or JQuery's ``text()`` function for
+proper escaping. For more details, see :ref:`Safe JavaScript Files`.
+
+javascript-interpolate
+~~~~~~~~~~~~~~~~~~~~~~
+
+For interpolation in JavaScript, use ``StringUtils.interpolate()`` or
+``HtmlUtils.interpolateHtml()`` as appropriate. For more details, see
+:ref:`Safe JavaScript Files`.
+
+.. _javascript-jquery-append:
+
+javascript-jquery-append
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+In place of JQuery's ``append()`` function, you can use ``HtmlUtils.append()``
+which respects HTML snippets and thus is more safe. An alternative is to use the
+``toString()`` function of any ``HtmlUtils`` call inside the JQuery ``append()``
+call.
+
+Here is an example with a violation.
+
+.. code-block:: javascript
+
+    // DON'T do this
+    self.$el.append(
+        _.template(teamActionsTemplate)({message: message})
+    );
+
+The following is safe.
+
+.. code-block:: javascript
+
+    // DO this
+    HtmlUtils.append(
+        self.$el,
+        HtmlUtils.template(teamActionsTemplate)({message: message})
+    );
+
+This would also be safe.
+
+.. code-block:: javascript
+
+    // DO this
+    self.$el.append(
+        HtmlUtils.template(teamActionsTemplate)({message: message}).toString()
+    );
+
+You can also use JQuery ``append()`` with variables that represent an element,
+as designated by starting with a ``$`` or ending in ``El``, like ``$element`` or
+``sampleEl``. You can also use the ``$el`` element from Backbone.js.
+
+Here is a safe example with one of these variables.
+
+.. code-block:: javascript
+
+    // DO this
+    self.$el.append($button);
+
+For more details regarding ``HtmlUtils``, see :ref:`Safe JavaScript Files`.
+
+javascript-jquery-html
+~~~~~~~~~~~~~~~~~~~~~~
+
+In some cases, JQuery's ``html()`` function is used with a string that doesn't
+contain any HTML tags.  If this is the case, just use JQuery`s ``text()``
+function instead.  Otherwise, you can replace the ``html()`` call with a call
+to ``HtmlUtils.setHtml()``, or you can call ``toString()`` on any ``HtmlUtils``
+function inside the ``html()`` call.
+
+For more detailed examples, see :ref:`javascript-jquery-append`.
+
+javascript-jquery-insert-into-target
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+JQuery DOM insertion calls that take a target, for example ``appendTo()``, can
+only be called from element variables. For example, you could use
+``$el.appendTo()``, but you cannot use ``anyOldVariable.appendTo()``.
+
+Alternatively, you could refactor to use a different JQuery method, including
+alternatives available in ``HtmlUtils``.
+
+For more details on legal names for element variables, see
+:ref:`javascript-jquery-append`.
+
+javascript-jquery-insertion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+JQuery DOM insertion calls that take content and don't have an ``HtmlUtils``
+equivalent, for example ``before()``, must use other ``HtmlUtils`` calls to be
+safe. One option is to refactor to use ``HtmlUtils.append()``,
+``HtmlUtils.prepend()``, or ``HtmlUtils.setHtml()``.  Another alternative is to
+use ``toString()`` along with any ``HtmlUtils`` call.
+
+For example, let's look at the following JQuery ``before()`` call that is
+considered unsafe:
+
+.. code-block:: javascript
+
+    // DON't do this
+    this.button.after(message);
+
+Instead, you could refactor to create ``liveRegion`` using ``HtmlUtils``, and
+then complete the refactor using ``HtmlUtils.ensureHtml()``, as seen in the
+following example.
+
+.. code-block:: javascript
+
+    // DO this
+    messageHtml = HtmlUtils.template(messageTemplate);
+    this.button.after(
+        HtmlUtils.ensureHtml(messageHtml).toString()
+    );
+
+javascript-jquery-prepend
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the ``prepend()`` equivalents to ``append()``, as described in
+:ref:`javascript-jquery-append`.
+
+mako-html-alone
+~~~~~~~~~~~~~~~
+
+If you are using the ``HTML()`` function alone in a Mako expression, without any
+calls to ``Text()``, it is important to make sure it is used on properly escaped
+HTML. You also must not use any string concatenation.
+
+For proper use of ``HTML()`` and ``Text()``, see :ref:`HTML Context in Mako`.
+
+mako-html-entities
+~~~~~~~~~~~~~~~~~~
+
+Once a Mako template is marked safe by default, HTML entities like ``&amp;``
+should instead be plain text like ``&`` because they will be escaped with the
+rest of the expression. If the entity appears in the midst of HTML, it should
+probably be wrapped with a call to ``HTML()``.
+
+Here is a violation as an example.
+
+.. code-block:: mako
+
+    ## DON'T do this
+    ${_("Details &amp; Schedule")}
+
+Instead, you should have the following.
+
+.. code-block:: mako
+
+    ## DO this
+    <%page expression_filter="h"/>
+    ...
+    ${_("Details & Schedule")}
+
+.. _mako-html-requires-text:
+
+mako-html-requires-text
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In a Mako expression, any interpolation using ``format()`` with interpolated
+``HTML()`` calls must be preceded by a call to ``Text()``.
+
+The following example is a violation.
+
+.. code-block:: mako
+
+    ## DON'T do this
+    ${_("Click over to {link_start}the home page{link_end}.").format(
+        link_start=HTML('<a href="/home">'),
+        link_end=HTML('</a>'),
+    )}
+
+Instead, use ``Text()``, as in the following example.
+
+.. code-block:: mako
+
+    ## DO this
+    ${Text(_("Click over to {link_start}the home page{link_end}.")).format(
+        link_start=HTML('<a href="/home">'),
+        link_end=HTML('</a>'),
+    )}
+
+For a deeper understanding, see :ref:`Why Text() with HTML()`.
+
+mako-invalid-html-filter
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The only valid alternatives to the default HTML filter when a template is marked
+safe by default, is to disable HTML-escaping in one of the following ways.
+
+.. code-block:: mako
+
+    ## DO this
+    ${HTML(x)}
+    ## or
+    ${x | n, decode.utf8}
+
+It is very important that these must only be used in the rare cases where you
+already have properly escaped safe HTML, and you cannot move the HTML generation
+to the template.
+
+If you must disable HTML-escaping, of the two alternatives above, using
+``HTML()`` is preferred, unless the context is ambiguous and ``HTML()`` does not
+make sense, like in certain Mako defs.
+
+mako-invalid-js-filter
+~~~~~~~~~~~~~~~~~~~~~~
+
+You must use one of the following legal filters in a JavaScript context.
+
+.. code-block:: mako
+
+    ## DO this
+    ${x | n, dump_js_escaped_json}
+    ## or
+    ${x | n, js_escaped_string}
+    ## or
+    ${x | n, decode.utf8}
+
+It is very important that the filter ``| n, decode.utf8``, which simply turns
+off any escaping, must only be used in the rare case where you already have
+properly JavaScript-escaped safe HTML, and you cannot move that HTML generation
+to a template.
+
+Take note of any expression that was mistakenly using ``| h`` in a JavaScript
+context. Although you likely just fixed a bug when you changed to one of the
+filters above, you will want to pay extra attention to the downstream JavaScript
+that is rendering this data and double-check that it is being properly escaped.
+It might not be, because it would have caused a double-escaping issue as it was.
+
+For help using these filters, see :ref:`JavaScript Context in Mako`.
+
+mako-js-html-string
+~~~~~~~~~~~~~~~~~~~
+
+Do not embed Mako expressions directly into a JavaScript string that uses HTML.
+JavaScript in a Mako template should be just enough to pass variables from Mako
+to JavaScript. Anything more complicated is likely to cause escaping issues.
+
+Here is a sample violation.
+
+.. code-block:: mako
+
+    // DON'T do this
+    var invalid = '<strong>${x | n, js_escaped_string}</strong>'
+
+Instead, simplify the data passing from Mako to JavaScript as follows.
+
+.. code-block:: mako
+
+    // DO this
+    var valid = '${x | n, js_escaped_string}'
+
+You can then use the above ``valid`` variable using any of the JavaScript
+``HtmlUtils`` functions, or in an Underscore.js template.
+
+mako-js-missing-quotes
+~~~~~~~~~~~~~~~~~~~~~~
+
+A Mako expression using the ``js_escaped_string`` filter must be wrapped in
+quotes.
+
+.. code-block:: mako
+
+    // DON't do this
+    var message = ${msg | n, js_escaped_string}
+
+    // DO this
+    var message = '${msg | n, js_escaped_string}'
+
+mako-missing-default
+~~~~~~~~~~~~~~~~~~~~
+
+The Mako template is missing the directive that makes it safe by default. Add
+the following to the top of the Mako template file.
+
+.. code-block:: mako
+
+    <%page expression_filter="h"/>
+
+It is important to understand that this will add HTML-escaping to all
+Mako expressions in the template. The linter may report additional problems once
+this has been done, so you will want to run it again after this is in place.
+
+mako-multiple-page-tags
+~~~~~~~~~~~~~~~~~~~~~~~
+
+A Mako template can only have one ``<%page>`` tag. If the template was already
+using this tag to pass arguments, you must combine the two tags.
+
+The following is an example in violation of this rule.
+
+.. code-block:: mako
+
+    ## DON'T do this
+    <%page expression_filter="h" />
+    ...
+    <%page args="section_data" />
+
+Here is this code once it has been fixed.
+
+.. code-block:: mako
+
+    ## DO this
+    <%page args="section_data" expression_filter="h" />
+
+mako-text-redundant
+~~~~~~~~~~~~~~~~~~~
+
+It is unnecessary to you use the ``Text()`` function in a Mako expression when
+you have no need of interpolating HTML with the ``HTML()`` function. It is
+cleaner to leave it out.
+
+mako-unparseable-expression
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This likely means that there is a syntax error in the Mako template. If the
+template is valid, in addition to using the disable pragma detailed in
+:ref:`Disabling Linter Violations`, please report the issue through the `Getting
+Help <https://open.edx.org/getting-help>`_ page on the Open edX portal.
+
+mako-unwanted-html-filter
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once the page level directive has been added to make the Mako template safe by
+default, any use of the ``h`` filter in an expression is redundant. These ``h``
+filters should be removed.
+
+python-close-before-format
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You must close any call to ``Text()`` or ``HTML()`` before calling ``format()``.
+Another way to state this is that you should only pass a single literal string
+to ``Text()`` or ``HTML()``.
+
+Here is an example of this in violation. Note that the problem is subtle, and
+that there is only a single ``)`` before the call to ``format()``, closing
+the ``_()`` call, but not the ``Text()`` call.
+
+.. code-block:: mako
+
+    ## DON'T do this
+    ${Text(_("Click over to {link_start}the home page{link_end}.").format(
+        link_start=HTML('<a href="/home">'),
+        link_end=HTML('</a>'),
+    ))}
+
+Here is a corrected version of the same code block.
+
+.. code-block:: mako
+
+    ## DO this
+    ${Text(_("Click over to {link_start}the home page{link_end}.")).format(
+        link_start=HTML('<a href="/home">'),
+        link_end=HTML('</a>'),
+    )}
+
+.. _python-concat-html:
+
+python-concat-html
+~~~~~~~~~~~~~~~~~~
+
+It is safer to use the ``HTML()`` and ``Text()`` functions, rather than
+concatenating strings with HTML. An even better solution would be to handle
+interpolation with HTML in a proper template, like a Mako template.
+
+Take the following violation as an example.
+
+.. code-block:: python
+
+    # DON'T do this
+    msg = '<html>' + msg + '</html>'
+
+Instead, it is possible to properly HTML-escape ``msg`` as follows.
+
+.. code-block:: python
+
+    # DO this
+    msg = HTML('<html>{msg}</html>').format(msg=msg)
+
+python-custom-escape
+~~~~~~~~~~~~~~~~~~~~
+
+Instead of writing a custom escaping method that replaces ``<`` with ``&lt;``,
+use a standard escaping function like ``markupsafe.escape()``.
+
+python-deprecated-display-name
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The XBlock function ``display_name_with_default_escaped`` has been deprecated
+and should not be used. Instead, you must use the call
+``display_name_with_default`` and follow the best practices for proper
+escaping based on the context.
+
+It might be that ``display_name_with_default_escaped`` was called from Python
+while setting up the context for your Mako template. You still must fix this
+to be ``display_name_with_default`` and make sure it is properly escaped in
+the Mako template.
+
+Take note of any places where this value was used in a JavaScript context. You
+must make sure that this data is properly escaped downstream when it is
+finally added to the page, for example, in an Underscore.js template.
+
+python-interpolate-html
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Interpolation with HTML should use the ``HTML()``, ``Text()``, and ``format()``
+functions. For details, see :ref:`python-concat-html`.
+
+python-parse-error
+~~~~~~~~~~~~~~~~~~
+
+This likely means that there is a syntax error in the Python file. If the Python
+file is valid, in addition to using the disable pragma detailed in
+:ref:`Disabling Linter Violations`, please report the issue through the `Getting
+Help <https://open.edx.org/getting-help>`_ page on the Open edX portal.
+
+python-requires-html-or-text
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In Python, when using either ``HTML()`` or ``Text()`` for interpolation with the
+``format()`` function, you must wrap the initial string with ``HTML()`` or
+``Text()`` as appropriate.
+
+For more details, see the less general rule as documented for the Mako
+violation :ref:`mako-html-requires-text`.
+
+python-wrap-html
+~~~~~~~~~~~~~~~~
+
+When interpolating a string containing HTML using a call to ``format()``, you
+must wrap the HTML with ``HTML()``. You may see this issue in a Mako template
+or a Python file. Also, you may have HTML embedded into a larger string that
+first needs to be interpolated in. Or, you may already be interpolating in
+smaller strings containing HTML, but they simply aren't yet protected by a call
+to ``HTML()``.
+
+For proper use of ``HTML()`` and ``Text()``, see :ref:`HTML Context in Mako`.
+
+underscore-not-escaped
+~~~~~~~~~~~~~~~~~~~~~~
+
+Underscore.js template expressions should all be HTML-escaped using
+``<%- expression %>``. The only exceptions where you can use ``<%=`` which does
+not escape is when making an ``HtmlUtils`` call.
+
+For more details, see :ref:`Safe Underscorejs Template Files`.
 
 Advanced Topics
 ***************
