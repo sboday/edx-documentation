@@ -17,6 +17,12 @@ in the audit track.
    <Requirements for Verified Track Cohorts>` for using cohorts to deliver
    differentiated content to your verified track learners.
 
+.. note:: If you want to use this feature in a course that is live, and
+   verified track learners might already have enrolled, contact your edX
+   partner manager to discuss configuration possibilities and how to migrate
+   existing verified track learners to the correct cohort.
+
+
 .. contents::
   :local:
   :depth: 1
@@ -217,8 +223,8 @@ depending on the track that they join.
 * Learners who enroll in the verified track are automatically placed in the
   verified track cohort.
 
-* Learners who enroll in the audit track are placed in the cohort or one of
-  the cohorts for audit track learners.
+* Learners who enroll in the audit track are placed in the cohort or cohorts
+  that you created for audit track learners.
 
 Learners see content that is specific for their cohort, including any
 discussion topics that you specify as cohort-specific. When learners
@@ -259,8 +265,8 @@ current grades correctly reflect the course content that they have completed
 in their current track.
 
 For example, if a verified track learner has taken an exam that was available
-only for verified track learners and then unenrolls from the course, and re-
-enrolls as an audit track learner, her scores for any undifferentiated content
+only for verified track learners and then unenrolls from the course, and
+re-enrolls as an audit track learner, her scores for any undifferentiated content
 are retained, but her score for the verified track-specific exam that she
 completed would not be retained. Her grade for that part of the course would
 be incomplete until she takes the audit track version of the same exam (if the
