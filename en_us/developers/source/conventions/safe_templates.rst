@@ -942,12 +942,12 @@ To run the linter on all of edx-platform, use the following command.
 
     ./scripts/safe_template_linter.py
 
-You can also lint an individual file or directory. Here is an example of how to
-lint a single file.
+You can also lint an individual file or recursively lint a directory. Here is an
+example of how to lint a single file.
 
 .. code-block:: bash
 
-    ./scripts/safe_template_linter.py --file cms/templates/base.html
+    ./scripts/safe_template_linter.py cms/templates/base.html
 
 For additional options running the linter, use the following command.
 
@@ -1351,6 +1351,14 @@ mako-text-redundant
 It is unnecessary to use the ``Text()`` function in a Mako expression when you
 have no need of interpolating HTML with the ``HTML()`` function. It is cleaner
 to leave it out.
+
+mako-unknown-context
+~~~~~~~~~~~~~~~~~~~~
+
+The linter could not determine if the context is JavaScript or HTML. In addition
+to using the disable pragma detailed in :ref:`Disabling Linter Violations`,
+please report the issue through the `Getting Help
+<https://open.edx.org/getting-help>`_ page on the Open edX portal.
 
 mako-unparseable-expression
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
