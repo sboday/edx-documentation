@@ -21,7 +21,7 @@ categories.
  :local:
  :depth: 1
 
-All members of the edX community are encouraged to make use of any of the
+All members of the edX community are encouraged to make use of the
 resources described in this preface. We welcome your feedback on these edX
 information resources. Contact the edX documentation team at `docs@edx.org`_.
 
@@ -211,32 +211,52 @@ monitored by edX staff.
 Resources for Researchers
 **************************
 
-Data for the courses on edx.org and edX Edge is available to the "data czars"
+At each partner institution, the data czar is the primary point of contact
+for information about edX data. To set up a data czar for your institution,
+contact your edX partner manager.
+
+Data for the courses on edx.org and edX Edge is available to the data czars
 at our partner institutions, and then used by database experts, statisticians,
 educational investigators, and others for educational research.
+
+Resources are also available for members of the Open edX community who are
+collecting data about courses running on their sites and conducting research
+projects.
 
 ==============
 Documentation
 ==============
 
-The `edX Research Guide`_ is available on the docs.edx.org web page.
+The `edX Research Guide`_ is available on the docs.edx.org web page. Although
+it is written primarily for data czars and researchers at partner institutions,
+this guide can also be a useful reference for members of the Open edX
+community.
 
-This guide opens in your web browser, with a **Search docs** field and links to
-that guide's contents on the left side of each page. To open or save a PDF
-version, select **v: latest** at the lower right of the page, and then select
-**PDF**.
+The *edX Research Guide* opens in your web browser, with a **Search docs**
+field and links to sections and topics on the left side of each page. To open
+or save a PDF version, select **v: latest** at the lower right of the page, and
+then select **PDF**.
 
 .. note:: If you use the Safari browser, be aware that it does not support the
  search feature for the HTML versions of the edX guides. This is a known
  limitation.
 
-======
-Email
-======
+==============================
+Discussion Forums and Email
+==============================
 
-To receive and share information by email, researchers can join the
-`openedx-analytics`_ Google group to ask questions and participate in
-discussions with peers at other edX partner organizations and edX staffers.
+Researchers, edX data czars, and members of the global edX data and analytics
+community can post and discuss questions in our public research forum: the
+`openedx-analytics`_ Google group.
+
+The edX partner portal also offers community `forums`_, including a Research
+and Analytics topic, for discussions among edX partners.
+
+.. important:: Please do not post sensitive data to public forums.
+
+Data czars who have questions that involve sensitive data, or that are
+institution specific, can send them by email to data.support@edx.org
+with a copy to your edX partner manager.
 
 ======
 Wikis
@@ -263,12 +283,12 @@ Documentation
 
 Documentation for developers is available on the `docs.edx.org`_ web page.
 
-* The `edX Platform Developer's Guide`_ includes guidelines for
-  contributing to Open edX, options for extending the Open edX platform, using
-  the edX public sandboxes, instrumenting analytics, and testing.
+* The `edX Platform Developer's Guide`_ includes guidelines for contributing to
+  the Open edX project, options for extending the Open edX platform,
+  instrumenting analytics, and testing.
 
-* `Installing, Configuring, and Running the Open edX Platform`_ provides procedures
-  for getting an edX developer stack (devstack) and production stack
+* `Installing, Configuring, and Running the Open edX Platform`_ provides
+  procedures for getting an edX developer stack (devstack) and production stack
   (fullstack) operational.
 
 * `Open edX XBlock Tutorial`_ guides developers through the process of
@@ -278,7 +298,7 @@ Documentation for developers is available on the `docs.edx.org`_ web page.
   API.
 
 * `edX Open Learning XML Guide`_ provides guidelines for building edX courses
-  with Open Learning XML (OLX). Note that this guide is currently an alpha
+  with OLX (open learning XML). Note that this guide is currently an alpha
   version.
 
 * `edX Data Analytics API`_ provides reference information for using the data
@@ -362,9 +382,9 @@ is available.
 * `Installing, Configuring, and Running the Open edX Platform`_ provides
   information about installing and using devstack and fullstack.
 
-* The `edX Platform Developer's Guide`_ includes guidelines for
-  contributing to Open edX, options for extending the Open edX platform, using
-  the edX public sandboxes, instrumenting analytics, and testing.
+* The `edX Platform Developer's Guide`_ includes guidelines for contributing to
+  the Open edX project, options for extending the Open edX platform,
+  instrumenting analytics, and testing.
 
 * `Open edX XBlock Tutorial`_ guides developers through the process of
   creating an XBlock, and explains the concepts and anatomy of XBlocks.
@@ -456,6 +476,7 @@ edX Global Community meetup_ group.
 .. _EdX Learner's Guide: http://edx-guide-for-students.readthedocs.org/en/latest/
 .. _edX Open Learning XML Guide: http://edx-open-learning-xml.readthedocs.org/en/latest/index.html
 .. _edX Partner Portal: https://partners.edx.org
+.. _forums: https://partners.edx.org/forums/partner-forums
 .. _edX Platform APIs: http://edx.readthedocs.org/projects/edx-platform-api/en/latest/
 .. _edX Platform Developer's Guide: http://edx.readthedocs.org/projects/edx-developer-guide/en/latest/
 .. _edX Research Guide: http://edx.readthedocs.org/projects/devdata/en/latest/

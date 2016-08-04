@@ -30,7 +30,7 @@ Reported Problem Types
 **********************
 
 To measure problem-related activity, the learner engagement report includes
-data for capa problems. That is, the report includes data for problems for
+data for CAPA problems. That is, the report includes data for problems for
 which learners can select **Check**, including these problem types.
 
  * Checkboxes
@@ -114,7 +114,7 @@ Download the Learner Engagement Report
 
 An automated process runs daily on the system server to update learner
 engagement data and create the daily or weekly .csv file for you to download.
-Links to the .csv files are available on the Instructor Dashboard.
+Links to the .csv files are available in the LMS from the instructor dashboard.
 
 To download a learner engagement report, follow these steps.
 

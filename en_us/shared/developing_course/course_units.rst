@@ -68,16 +68,17 @@ Viewing Units as a Learner
 ****************************
 
 To a learner using the edX learning management system (LMS), each unit in the
-subsection appears as a link in the learning sequence at the top of the
-**Course** page. The contents of the active unit appear below the learning
-sequence.
+subsection is represented by an icon in the unit navigation bar at the top of
+the **Course** page. The components in the selected unit appear below the unit
+navigation bar.
 
-The following image shows a subsection with four units in the LMS. The first
-unit is open. Each unit is represented by an icon in the learning sequence.
+The following image shows a subsection with five units in the LMS. The fourth
+unit is open.
 
 .. image:: ../../../shared/images/Units_LMS.png
- :alt: Image of a unit in a subsection in the LMS, with all of the units in the
-  learning sequence indicated.
+ :alt: A unit in the LMS, with all of the unit icons in the unit navigation bar
+  indicated.
+ :width: 500
 
 .. _The Unit Workflow:
 
@@ -183,7 +184,7 @@ it to be included in the LMS.
 Published and Live
 ====================
 
-You published the unit and have not modified it. The release date for the
+You published the unit and have not modified it. The release dates for the
 section and subsection have passed (in an instructor-paced course). You, and
 enrolled learners, see the current version of the unit.
 
@@ -493,10 +494,10 @@ You can hide a unit from learners using the course outline or the unit page.
 Use the Unit Page to Hide a Unit
 =======================================
 
-Select the **Hide from students** check box in the status panel.
+Select **Hide from learners** in the status panel.
 
 .. image:: ../../../shared/images/unit-hide.png
- :alt: Unit status panel with Hide from Students selected.
+ :alt: Unit status panel with Hide from Learners selected.
  :width: 200
 
 The **Release** section applies only to instructor-paced courses. It does not
@@ -517,7 +518,7 @@ Use the Outline to Hide a Unit
 
    The **Settings** dialog box opens.
 
-#. Check **Hide from students**.
+#. In the **Unit Visibility** section, select **Hide from learners**.
 
 #. Select **Save**.
 
@@ -528,16 +529,16 @@ Make a Hidden Unit Visible to Learners
 Before you make a hidden unit visible to learners, be aware that course content
 will immediately be visible to learners, as follows.
 
-* For a hidden unit that previously was published, clearing the check box
-  publishes the current content for the unit. If you made changes to the unit
-  while is was hidden, those draft changes are published.
+* For a hidden unit that previously was published, deselecting **Hide from
+  learners** publishes the current content for the unit. If you made changes to
+  the unit while is was hidden, those draft changes are published.
 
 * When you make a section or subsection that was previously hidden visible to
   learners, draft content in units is *not* published. Changes you made since
   last publishing units are not made visible to learners.
 
 You can make a hidden unit visible to learners from the unit page or the course
-outline. Follow the instructions above and clear the **Hide from students**
+outline. Follow the instructions above and clear the **Hide from learners**
 check box.
 
 You are prompted to confirm that you want to make the unit visible to learners.

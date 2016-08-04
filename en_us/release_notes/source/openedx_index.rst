@@ -11,6 +11,48 @@ The following information summarizes what is new in Open edX.
   :depth: 1
 
 *************************
+Week of 18 June 2016
+*************************
+
+.. include:: 2016/openedx/openedx_0718_2016.rst
+
+*************************
+Week of 27 June 2016
+*************************
+
+.. include:: 2016/openedx/openedx_0627_2016.rst
+
+*************************
+Week of 30 May 2016
+*************************
+
+.. include:: 2016/openedx/openedx_0530_2016.rst
+
+*************************
+Week of 23 May 2016
+*************************
+
+.. include:: 2016/openedx/openedx_0523_2016.rst
+
+*************************
+Week of 16 May 2016
+*************************
+
+.. include:: 2016/openedx/openedx_0516_2016.rst
+
+*************************
+Week of 9 May 2016
+*************************
+
+.. include:: 2016/openedx/openedx_0509_2016.rst
+
+*************************
+Week of 2 May 2016
+*************************
+
+.. include:: 2016/openedx/openedx_0502_2016.rst
+
+*************************
 Week of 18 April 2016
 *************************
 

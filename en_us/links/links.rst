@@ -4,6 +4,12 @@
 
 .. EdX Links
 
+.. _change log for the Backbone.js library: https://github.com/jashkenas/backbone/blob/master/index.html#L4299
+
+.. _Query string syntax: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax
+
+.. _Coming Soon Programs Page: https://open.edx.org/announcements/coming-soon-xseries-programs-page
+
 .. _Using edX Insights: http://edx.readthedocs.org/projects/edx-insights/en/latest/
 
 .. _Review Answers to Graded Problems: http://edx.readthedocs.org/projects/edx-insights/en/latest/performance/Performance_Answers.html#review-answers-to-graded-problems
@@ -11,6 +17,8 @@
 .. _Review Answers to Ungraded Problems: http://edx.readthedocs.org/projects/edx-insights/en/latest/performance/Performance_Ungraded.html#review-answers-to-ungraded-problems
 
 .. _Open edX Analytics wiki: http://edx-wiki.atlassian.net/wiki/display/OA/Open+edX+Analytics+Home
+
+.. _openedx-analytics: http://groups.google.com/forum/#!forum/openedx-analytics
 
 .. _Entity Relationship Diagram for ORA Data: https://openedx.atlassian.net/wiki/display/AN/Entity+Relationship+Diagram+for+ORA+Data
 
@@ -46,6 +54,8 @@
 
 .. _edx.org registration: https://courses.edx.org/register
 
+.. _Research & Pedagogy: https://www.edx.org/about/research-pedagogy
+
 .. _docs@edx.org: docs@edx.org
 
 .. _Overview of Creating an edX Course: https://www.edx.org/course/overview-creating-edx-course-edx-edx101#.VHKBz76d9BV
@@ -62,15 +72,21 @@
 .. _edX Partner Support: https://partners.edx.org/edx_zendesk
 
 
-.. _edX pattern library: http://ux.edx.org/elements/colors/
+.. _edX pattern library: http://ux.edx.org/design_elements/colors/
 
 .. GitHub Links
 
 .. _GitHub: http://github.com
 
+.. _Contribute to edX Documentation: https://github.com/edx/edx-documentation#contribute-to-edx-documentation
+
+.. _edx-documentation/shared: https://github.com/edx/edx-documentation/blob/master/shared/conf.py
+
 .. _edx-analytics-configuration: https://github.com/edx/edx-analytics-configuration
 
 .. _edx-documentation: https://github.com/edx/edx-documentation
+
+.. _edx-tools wiki: https://github.com/edx/edx-tools/wiki
 
 .. _custom_form_app: https://github.com/open-craft/custom-form-app
 
@@ -130,6 +146,8 @@
 
 .. _The migrate.sh script: https://github.com/edx/configuration/blob/master/util/vagrant/migrate.sh
 
+.. _The upgrade.sh script: https://github.com/edx/configuration/blob/master/util/vagrant/upgrade.sh
+
 .. _Devstack wiki: https://github.com/edx/configuration/wiki/edX-Developer-Stack
 
 .. _Developing on Devstack: https://github.com/edx/edx-platform/wiki/Developing-on-the-edX-Developer-Stack
@@ -148,6 +166,11 @@
 
 .. _Open edX Native Installation: https://openedx.atlassian.net/wiki/x/bgCXAw
 
+.. _ux.edx.org: http://ux.edx.org/
+
+.. _ui-toolkit.edx.org: http://ui-toolkit.edx.org/
+
+.. _edx-ui-toolkit GitHub repository: https://github.com/edx/edx-ui-toolkit
 
 .. EDX VMs
 
@@ -228,9 +251,10 @@
 .. _Creative Commons website: http://creativecommons.org/licenses
 .. _Google Fonts: https://www.google.com/fonts#UsePlace:use/Collection:Open+Sans
 .. _Time and Date Time Zone Converter: http://www.timeanddate.com/worldclock/converter.html
-
+.. _Cross-referencing arbitrary locations: http://www.sphinx-doc.org/en/stable/markup/inline.html#cross-referencing-arbitrary-locations
 .. _Time Zone Converter: http://www.timezoneconverter.com/cgi-bin/tzc.tzc
-
+.. _MOOCdb project: http://moocdb.csail.mit.edu/
+.. _MOOCczar project: https://github.com/UQ-UQx
 .. _Google Calendar website: https://www.google.com/calendar
 
 .. _Oppia XBlock: https://github.com/oppia/xblock
@@ -244,6 +268,8 @@
 .. _Referer: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.36
 
 .. _mongodb: http://docs.mongodb.org/manual/
+
+.. _MongoDB® database: http://www.mongodb.com
 
 .. _AWS Command Line Interface: http://aws.amazon.com/cli/
 
@@ -442,4 +468,12 @@
 .. _Mazur Group: http://mazur.harvard.edu/research/detailspage.php?ed=1&rowid=8
 
 .. _Turn to Your Neighbor: https://blog.peerinstruction.net/
+
+.. _OAuth 2.0 Standard: https://tools.ietf.org/html/draft-ietf-oauth-v2-31
+
+.. _curl client program: https://curl.haxx.se/
+
+.. Video Catalog
+
+.. _Adding a Video ID:  https://youtu.be/7Yc1Z8RLYxM
 
